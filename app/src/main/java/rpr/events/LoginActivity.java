@@ -46,11 +46,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(etUsername.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
                 }
-                else if(etPassword.getText().toString().trim().equals("")){
+                else if(etPassword.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    final String username = etUsername.getText().toString();
+                    final String username = etUsername.getText().toString().trim();
                     final String password = etPassword.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String name = jsonResponse.getString("name");
                                 int user_id = jsonResponse.getInt("user_id");
                                 int age = jsonResponse.getInt("age");
+                                Toast.makeText(getApplicationContext(), "Login Successfull " + username, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
                                 intent.putExtra("name", name);
                                 intent.putExtra("user_id", user_id);
@@ -71,10 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                             else {
-                                ;
 
-                                Toast toast = Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT);
-                                toast.show();
+                                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
 //                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
 //                                builder.setMessage("Login Failed")
 //                                        .setNegativeButton("Retry", null)

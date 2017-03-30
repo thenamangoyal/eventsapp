@@ -16,6 +16,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
@@ -38,44 +40,52 @@ public class RegisterActivity extends AppCompatActivity {
                 else if(etUsername.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
                 }
-                else if(etPassword.getText().toString().trim().equals("")){
+                else if(etPassword.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
                 }
                 else if (etAge.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Age", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    final String name = etName.getText().toString();
-                    final String username = etUsername.getText().toString();
-                    final String password = etPassword.getText().toString();
-                    final int age = Integer.parseInt(etAge.getText().toString());
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-                                if (success) {
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    Toast.makeText(getApplicationContext(), "Register Successfull " + username, Toast.LENGTH_SHORT).show();
-                                    RegisterActivity.this.startActivity(intent);
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Register Failed", Toast.LENGTH_SHORT).show();
-//                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-//                                    builder.setMessage("Register Failed")
-//                                            .setNegativeButton("Retry", null)
-//                                            .create()
-//                                            .show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
+                    final String name = etName.getText().toString().trim();
+                    final String username = etUsername.getText().toString().trim();
 
-                    RegisterRequest registerRequest = new RegisterRequest(name, username, age, password, responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                    queue.add(registerRequest);
+                    final String password = etPassword.getText().toString();
+                    final int age = Integer.parseInt(etAge.getText().toString().trim());
+
+                    boolean iitrpr_email = username.matches("\\w+@iitrpr\\.ac\\.in");
+                    if (!iitrpr_email){
+                        Toast.makeText(getApplicationContext(), "Please enter iitrpr email only", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success");
+                                    if (success) {
+                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                        Toast.makeText(getApplicationContext(), "Register Successfull " + username, Toast.LENGTH_SHORT).show();
+                                        RegisterActivity.this.startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Register Failed", Toast.LENGTH_SHORT).show();
+    //                                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+    //                                    builder.setMessage("Register Failed")
+    //                                            .setNegativeButton("Retry", null)
+    //                                            .create()
+    //                                            .show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+
+                        RegisterRequest registerRequest = new RegisterRequest(name, username, age, password, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                        queue.add(registerRequest);
+                    }
                 }
             }
         });
