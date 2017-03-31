@@ -17,10 +17,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NewEventActivity" />
+        <activity android:name=".EventDisplayUser" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserAreaActivity" />
-        <activity android:name=".EventDisplayUser" />
-        <activity android:name=".NewEventActivity"></activity>
+        <activity
+            android:name=".NavBar"
+            android:label="@string/title_activity_nav_bar"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

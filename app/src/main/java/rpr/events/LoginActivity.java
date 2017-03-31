@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                                 int user_id = jsonResponse.getInt("user_id");
                                 int age = jsonResponse.getInt("age");
                                 Toast.makeText(getApplicationContext(), "Login Successfull " + username, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, NavBar.class);
                                 intent.putExtra("name", name);
                                 intent.putExtra("user_id", user_id);
                                 intent.putExtra("username", username);
