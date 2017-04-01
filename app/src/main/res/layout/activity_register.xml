@@ -77,7 +77,8 @@
                 <Spinner
                     android:id="@+id/usertype_spinner"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"/>
 
             </android.support.v7.widget.Toolbar>
 

@@ -65,7 +65,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+
+                registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//            // Add new Flag to start new Activity
+                registerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 LoginActivity.this.startActivity(registerIntent);
+
+                finish();
+
 
             }
         });
