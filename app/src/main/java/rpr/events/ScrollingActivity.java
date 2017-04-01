@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.text.ParseException;
 import java.util.Calendar;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract;
@@ -52,8 +54,16 @@ public class ScrollingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_INSERT);
                 intent.setType("vnd.android.cursor.item/event");
-
-                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                Date date = new Date();
+                try {
+                    date = format.parse(time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Calendar beginCal = Calendar.getInstance();
+                beginCal.setTime(date);
+               long startTime = beginCal.getTimeInMillis();
 
 
                 //long endTime = cal.getTimeInMillis()  + 60 * 60 * 1000;
@@ -65,7 +75,9 @@ public class ScrollingActivity extends AppCompatActivity {
                 intent.putExtra(Events.TITLE, name);
                 intent.putExtra(Events.DESCRIPTION,  details);
                 intent.putExtra(Events.EVENT_LOCATION, venue);
-               // intent.putExtra(Events.RRULE, "FREQ=YEARLY");
+                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginCal.getTimeInMillis());
+
+                // intent.putExtra(Events.RRULE, "FREQ=YEARLY");
 
                 startActivity(intent);
             }
