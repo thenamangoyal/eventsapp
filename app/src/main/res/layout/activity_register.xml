@@ -78,7 +78,7 @@
                     android:id="@+id/usertype_spinner"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"/>
+                    android:entries="@array/select_an_item"/>
 
             </android.support.v7.widget.Toolbar>
 

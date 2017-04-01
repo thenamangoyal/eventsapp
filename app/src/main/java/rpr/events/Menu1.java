@@ -60,7 +60,7 @@ public class Menu1 extends Fragment {
     private ListView lv;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/php/ListAll.php";
+    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -79,12 +79,11 @@ public class Menu1 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Menu 1");
+        getActivity().setTitle("List Events");
 //        ProgressDialog pDialog;
 //        ListView lv;
 
         // URL to get events JSON
-        //String ListURL = "http://10.1.1.19/~2015csb1021/php/ListAll.php";
 
         eventList = new ArrayList<>();
 

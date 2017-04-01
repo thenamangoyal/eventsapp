@@ -26,6 +26,9 @@
         <item>0</item>
         <item>-1</item>
     </string-array>
+    <string-array name="select_an_item">
+        <item>Select an Item</item>
+    </string-array>
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>

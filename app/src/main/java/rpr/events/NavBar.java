@@ -145,6 +145,7 @@ public class NavBar extends AppCompatActivity
                 break;
             case R.id.nav_menu4:
                 session.logoutUser();
+                finish();
                 break;
         }
 
