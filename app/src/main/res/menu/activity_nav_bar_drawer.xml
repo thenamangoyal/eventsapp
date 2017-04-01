@@ -5,11 +5,11 @@
         <item
             android:id="@+id/nav_menu1"
             android:icon="@mipmap/ic_launcher"
-            android:title="Menu 1" />
+            android:title="List Events" />
         <item
             android:id="@+id/nav_menu2"
             android:icon="@mipmap/ic_launcher"
-            android:title="Menu 2" />
+            android:title="Organise Event" />
         <item
             android:id="@+id/nav_menu3"
             android:icon="@mipmap/ic_launcher"
