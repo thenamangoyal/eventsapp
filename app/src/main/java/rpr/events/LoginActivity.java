@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,14 +25,14 @@ public class LoginActivity extends AppCompatActivity {
     Button bLogin;
     TextView registerLink;
 
-    SessionManager session;
+   // SessionManager session;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Session Manager
-        session = new SessionManager(getApplicationContext());
+       // session = new SessionManager(getApplicationContext());
 
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -59,51 +60,49 @@ public class LoginActivity extends AppCompatActivity {
                 if(etUsername.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
                 }
-                else if(etPassword.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    final String username = etUsername.getText().toString().trim();
-                    final String password = etPassword.getText().toString();
+                else {
+                    if (etPassword.getText().toString().equals("")) {
+                        Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
+                    } else {
+                        final String username = etUsername.getText().toString().trim();
+                        final String password = etPassword.getText().toString();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if (success){
-                                String name = jsonResponse.getString("name");
-                                String username = jsonResponse.getString("username");
-                                int user_id = jsonResponse.getInt("user_id");
-                                int age = jsonResponse.getInt("age");
-                                session.createLoginSession(name,user_id);
-                                Toast.makeText(getApplicationContext(), "Login Successfull " + username, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, NavBar.class);
-                                //intent.putExtra("name", name);
-                                //intent.putExtra("user_id", user_id);
-                                //intent.putExtra("username", username);
-                                LoginActivity.this.startActivity(intent);
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success");
+                                    if (success) {
+                                        String name = jsonResponse.getString("name");
+                                        int user_id = jsonResponse.getInt("user_id");
 
+
+                                        Toast.makeText(getApplicationContext(), "Login Successfull " + username, Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, NavBar.class);
+
+                                        intent.putExtra("name", name);
+                                        intent.putExtra("user_id", user_id);
+                                        intent.putExtra("username", username);
+
+                                        LoginActivity.this.startActivity(intent);
+                                        Log.e("OnCreate", "8.1");
+
+                                    } else {
+
+                                        Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            else {
+                        };
 
-                                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-//                                builder.setMessage("Login Failed")
-//                                        .setNegativeButton("Retry", null)
-//                                        .create()
-//                                        .show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                        queue.add(loginRequest);
                     }
-                };
-
-                LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
                 }
             }
         });

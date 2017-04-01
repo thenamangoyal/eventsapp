@@ -39,10 +39,10 @@ public class NavBar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    SessionManager session;
+    //SessionManager session;
 
 
-    private static final String TAG = UserAreaActivity.class.getSimpleName();
+    //private static final String TAG = UserAreaActivity.class.getSimpleName();
     private static final String TAG_EVENT_ID = "event_id";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";
@@ -56,29 +56,19 @@ public class NavBar extends AppCompatActivity
         setContentView(R.layout.activity_nav_bar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Log.e("OnCreate","1");
-
-        session = new SessionManager(getApplicationContext());
-        Log.e("OnCreate","2");
 
 
-        //final TextView welcomMessage = (TextView) findViewById(R.id.tvWelcomMsg);
-       // final Intent intent = getIntent();
-       // final String name = intent.getStringExtra("name");
-        //final String username = intent.getStringExtra("username");
-       // final int user_id = intent.getIntExtra("user_id",-1);
-       // int age = intent.getIntExtra("age", -1);
+       // session = new SessionManager(getApplicationContext());
 
 
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        final Intent intent = getIntent();
+        final String name = intent.getStringExtra("name");
+        final String username = intent.getStringExtra("username");
+        final int user_id = intent.getIntExtra("user_id",-1);
+        //int age = intent.getIntExtra("age", -1);
+
+        Log.e("OnCreate","9");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,16 +80,18 @@ public class NavBar extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
-/*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+
 
 
         TextView Name = (TextView)header.findViewById(R.id.name);
         TextView UserName = (TextView)header.findViewById(R.id.username);
-        Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
-        Log.e("OnCreate","3");
+        Log.e("OnCreate","9.1");
 
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+        //Button btnLogout = (Button) findViewById(R.id.btnLogout);
+
+
+        /*Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
         Log.e("OnCreate","4");
         session.checkLogin();
         Log.e("OnCreate","5");
@@ -117,7 +109,7 @@ public class NavBar extends AppCompatActivity
 
         Log.e("OnCreate","6");
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        /*btnLogout.setOnClickListener(new View.OnClickListener() {
 
             @Override
 
@@ -128,12 +120,16 @@ public class NavBar extends AppCompatActivity
                 // redirect user to LoginActivity
                 session.logoutUser();
             }
-        });
+        });*/
 
-        //add this line to display menu1 when the activity is loaded
-        Log.e("OnCreate","7");
+
+
+        Name.setText(name);
+        UserName.setText(username);
+        Log.e("OnCreate","9.2");
         displaySelectedScreen(R.id.nav_menu1);
-        Log.e("OnCreate","7.1");
+        Log.e("OnCreate","9.3");
+
 
     }
 
@@ -156,12 +152,9 @@ public class NavBar extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -172,19 +165,7 @@ public class NavBar extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-       /* int id = item.getItemId();
 
-        if (id == R.id.nav_menu1) {
-            // Handle the camera action
-        } else if (id == R.id.nav_menu2) {
-
-        } else if (id == R.id.nav_menu3) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
 
         displaySelectedScreen(item.getItemId());
         return true;

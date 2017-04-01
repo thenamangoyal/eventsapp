@@ -82,7 +82,7 @@ public class SessionManager {
             // user is not logged in redirect him to Login Activity
             Log.e("OnCreate","9");
             Intent i = new Intent(_context, LoginActivity.class);
-            Log.e("OnCreate","10");
+
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
