@@ -40,7 +40,7 @@ public class EventDisplayUser extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("OnCreate","3");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_display_user);
         final String TAG_EVENT_ID = "event_id";

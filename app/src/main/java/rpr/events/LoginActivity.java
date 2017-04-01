@@ -19,15 +19,29 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    EditText etUsername;
+    EditText etPassword;
+    Button bLogin;
+    TextView registerLink;
+
+    SessionManager session;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
 
-        final Button bLogin = (Button) findViewById(R.id.bLogin);
-        final TextView registerLink = (TextView) findViewById(R.id.tvRegister);
+        // Session Manager
+        session = new SessionManager(getApplicationContext());
+
+        etUsername = (EditText) findViewById(R.id.etUsername);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        bLogin = (Button) findViewById(R.id.bLogin);
+        registerLink = (TextView) findViewById(R.id.tvRegister);
+
+
+
+
+
 
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 if(etUsername.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
@@ -61,13 +74,15 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if (success){
                                 String name = jsonResponse.getString("name");
+                                String username = jsonResponse.getString("username");
                                 int user_id = jsonResponse.getInt("user_id");
                                 int age = jsonResponse.getInt("age");
+                                session.createLoginSession(name,user_id);
                                 Toast.makeText(getApplicationContext(), "Login Successfull " + username, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, NavBar.class);
-                                intent.putExtra("name", name);
-                                intent.putExtra("user_id", user_id);
-                                intent.putExtra("username", username);
+                                //intent.putExtra("name", name);
+                                //intent.putExtra("user_id", user_id);
+                                //intent.putExtra("username", username);
                                 LoginActivity.this.startActivity(intent);
 
                             }
