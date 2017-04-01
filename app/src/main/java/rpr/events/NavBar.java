@@ -39,16 +39,12 @@ public class NavBar extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    //SessionManager session;
-
-
-    //private static final String TAG = UserAreaActivity.class.getSimpleName();
     private static final String TAG_EVENT_ID = "event_id";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";
     private static final String TAG_VENUE = "venue";
     private static final String TAG_DETAILS = "details";
-
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +52,10 @@ public class NavBar extends AppCompatActivity
         setContentView(R.layout.activity_nav_bar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        session = new UserSessionManager(getApplicationContext());
 
-
-       // session = new SessionManager(getApplicationContext());
-
-
-
-        final Intent intent = getIntent();
-        final String name = intent.getStringExtra("name");
-        final String username = intent.getStringExtra("username");
-        final int user_id = intent.getIntExtra("user_id",-1);
-        //int age = intent.getIntExtra("age", -1);
-
+        if(session.checkLogin())
+            finish();
         Log.e("OnCreate","9");
 
 
@@ -83,52 +71,20 @@ public class NavBar extends AppCompatActivity
 
 
 
-        TextView Name = (TextView)header.findViewById(R.id.name);
-        TextView UserName = (TextView)header.findViewById(R.id.username);
+        TextView Nameview = (TextView)header.findViewById(R.id.tvName);
+        TextView Emailview = (TextView)header.findViewById(R.id.tvEmail);
 
-        Log.e("OnCreate","9.1");
-
-        //Button btnLogout = (Button) findViewById(R.id.btnLogout);
-
-
-        /*Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-        Log.e("OnCreate","4");
-        session.checkLogin();
-        Log.e("OnCreate","5");
-        // get user data from session
         HashMap<String, String> user = session.getUserDetails();
 
-        // name
-        String name = user.get(SessionManager.KEY_NAME);
+        // get name
+        String name = user.get(UserSessionManager.KEY_NAME);
 
-        // email
-        String user_id = user.get(SessionManager.KEY_USER_ID);
+        // get email
+        String email = user.get(UserSessionManager.KEY_EMAIL);
 
-         Name.setText(name);
-         UserName.setText(user_id);
-
-        Log.e("OnCreate","6");
-
-        /*btnLogout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-
-            public void onClick(View arg0) {
-                Log.e("OnCreate","7.2");
-                // Clear the session data
-                // This will clear all session data and
-                // redirect user to LoginActivity
-                session.logoutUser();
-            }
-        });*/
-
-
-
-        Name.setText(name);
-        UserName.setText(username);
-        Log.e("OnCreate","9.2");
+        Nameview.setText(name);
+        Emailview.setText(email);
         displaySelectedScreen(R.id.nav_menu1);
-        Log.e("OnCreate","9.3");
 
 
     }
@@ -186,6 +142,9 @@ public class NavBar extends AppCompatActivity
                 break;
             case R.id.nav_menu3:
                 fragment = new Menu3();
+                break;
+            case R.id.nav_menu4:
+                session.logoutUser();
                 break;
         }
 

@@ -18,22 +18,19 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@android:drawable/sym_def_app_icon" /-->
 
-    <!--Button
-        android:id="@+id/btnLogout"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:text="Logout" /-->
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+
 
 </LinearLayout>

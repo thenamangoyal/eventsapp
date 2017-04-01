@@ -11,38 +11,55 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
-    EditText etUsername;
+    EditText etEmail;
     EditText etPassword;
     Button bLogin;
     TextView registerLink;
+    UserSessionManager session;
 
-   // SessionManager session;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Session Manager
-       // session = new SessionManager(getApplicationContext());
+        session = new UserSessionManager(getApplicationContext());
 
-        etUsername = (EditText) findViewById(R.id.etUsername);
+        etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
         bLogin = (Button) findViewById(R.id.bLogin);
         registerLink = (TextView) findViewById(R.id.tvRegister);
 
+        if (session.isUserLoggedIn()){
 
 
 
 
+            Intent intent = new Intent(LoginActivity.this, NavBar.class);
+//
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//            // Add new Flag to start new Activity
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            LoginActivity.this.startActivity(intent);
+            finish();
+      }
 
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,55 +74,86 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(etUsername.getText().toString().trim().equals("")){
+                if(etEmail.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     if (etPassword.getText().toString().equals("")) {
                         Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
                     } else {
-                        final String username = etUsername.getText().toString().trim();
+                        final String email = etEmail.getText().toString().trim();
                         final String password = etPassword.getText().toString();
 
-                        Response.Listener<String> responseListener = new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject jsonResponse = new JSONObject(response);
-                                    boolean success = jsonResponse.getBoolean("success");
-                                    if (success) {
-                                        String name = jsonResponse.getString("name");
-                                        int user_id = jsonResponse.getInt("user_id");
+                        String url = "http://10.1.1.19/~2015csb1021/event/Login.php";
 
+                        StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
+                                new Response.Listener<String>()
+                                {
+                                    @Override
+                                    public void onResponse(String response)
+                                    {
 
-                                        Toast.makeText(getApplicationContext(), "Login Successfull " + username, Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(LoginActivity.this, NavBar.class);
+                                        try{
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+                                            if (success) {
 
-                                        intent.putExtra("name", name);
-                                        intent.putExtra("user_id", user_id);
-                                        intent.putExtra("username", username);
+                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("created"));
 
-                                        LoginActivity.this.startActivity(intent);
-                                        Log.e("OnCreate", "8.1");
+                                                Toast.makeText(getApplicationContext(), "Login Successful " + jsonResponse.getString("name"), Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(LoginActivity.this, NavBar.class);
+//
+//                                                intent.putExtra("name", jsonResponse.getString("name"));
+//                                                intent.putExtra("user_id", jsonResponse.getInt("user_id"));
+//                                                intent.putExtra("usertype_id", jsonResponse.getInt("usertype_id"));
+//                                                intent.putExtra("email", jsonResponse.getString("email"));
+//                                                intent.putExtra("created", jsonResponse.getString("created"));
 
-                                    } else {
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                        Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+                                                // Add new Flag to start new Activity
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                LoginActivity.this.startActivity(intent);
+                                                finish();
+
+                                            } else {
+
+                                                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
 
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                }, new Response.ErrorListener()
+                                {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        // error
+                                    }
                                 }
-                            }
-                        };
+                        ) {
+                            @Override
+                            protected Map<String, String> getParams()
+                            {
+                                Map<String, String>  params = new HashMap<String, String>();
+                                params.put("email", email);
+                                params.put("password", password);
 
-                        LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-                        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                                return params;
+                            }
+
+                        };
+                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                         queue.add(loginRequest);
                     }
                 }
+
             }
         });
     
     }
+
+
 }
