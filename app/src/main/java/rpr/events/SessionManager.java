@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class SessionManager {
     // Shared Preferences
@@ -74,10 +75,14 @@ public class SessionManager {
      * Else won't do anything
      * */
     public void checkLogin(){
+
+        Log.e("OnCreate","8");
         // Check login status
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
+            Log.e("OnCreate","9");
             Intent i = new Intent(_context, LoginActivity.class);
+            Log.e("OnCreate","10");
             // Closing all the Activities
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

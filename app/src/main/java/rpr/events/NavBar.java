@@ -120,7 +120,9 @@ public class NavBar extends AppCompatActivity
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
             @Override
+
             public void onClick(View arg0) {
+                Log.e("OnCreate","7.2");
                 // Clear the session data
                 // This will clear all session data and
                 // redirect user to LoginActivity
@@ -129,8 +131,9 @@ public class NavBar extends AppCompatActivity
         });
 
         //add this line to display menu1 when the activity is loaded
-        displaySelectedScreen(R.id.nav_menu1);
         Log.e("OnCreate","7");
+        displaySelectedScreen(R.id.nav_menu1);
+        Log.e("OnCreate","7.1");
 
     }
 
