@@ -9,10 +9,32 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_scrolling">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
-        android:id="@+id/tvcontent"
-        android:layout_width="wrap_content"
+        android:id="@+id/details"
+        android:layout_below="@+id/venue"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin" />
+        android:textSize="16sp"
+        android:paddingBottom="4dip"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_below="@+id/details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dip"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/venue"
+        android:layout_below="@+id/time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dip"
+        android:textColor="@color/colorAccent"/>
+</LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

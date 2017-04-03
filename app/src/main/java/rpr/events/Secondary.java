@@ -45,11 +45,14 @@ public class Secondary extends Fragment {
     private static final String TAG_VENUE = "venue";
     private static final String TAG_DETAILS = "details";
 
+    private static String usertype_id;
+
+    UserSessionManager session;
     private static ProgressDialog pDialog;
     private ListView lv;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/php/ListAll.php";
+    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -60,11 +63,14 @@ public class Secondary extends Fragment {
         //change R.layout.yourlayoutfilename for each of your fragments
         context = getActivity();
         createDatabase();
+        session = new UserSessionManager(getContext());
+        HashMap<String, String> user = session.getUserDetails();
+        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
         return inflater.inflate(R.layout.secondary_layout, container, false);
 
     }
     protected void createDatabase(){
-        db=getActivity().openOrCreateDatabase("EventDB", Context.MODE_PRIVATE, null);
+        db=getActivity().openOrCreateDatabase("EventDB1", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS Events(event_id INTEGER NOT NULL, name VARCHAR NOT NULL,venue VARCHAR NOT NULL, time TIMESTAMP NOT NULL, details VARCHAR NOT NULL  );");
     }
 
@@ -77,14 +83,6 @@ public class Secondary extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Menu 1");
-//        ProgressDialog pDialog;
-//        ListView lv;
-
-        // URL to get events JSON
-        //String ListURL = "http://10.1.1.19/~2015csb1021/php/ListAll.php";
-
         eventList = new ArrayList<>();
         lv = (ListView) getView().findViewById(R.id.listView);
 
@@ -111,7 +109,7 @@ public class Secondary extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL);
+            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+usertype_id+"&category_id=1");
 
             Log.e(TAG, "Response from url: " + jsonStr);
 
@@ -151,15 +149,10 @@ public class Secondary extends Fragment {
                     db.close();
 
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context.getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
                         }
                     });
 

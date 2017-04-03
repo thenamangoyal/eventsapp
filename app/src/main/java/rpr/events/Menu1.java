@@ -11,15 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.util.Log;
 public class Menu1 extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 4;
+    public static int int_items = 5;
 
     @Nullable
     @Override
@@ -30,6 +32,7 @@ public class Menu1 extends Fragment {
         View x =  inflater.inflate(R.layout.tab_layout,null);
         tabLayout = (TabLayout) x.findViewById(R.id.tabs);
         viewPager = (ViewPager) x.findViewById(R.id.viewpager);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("List Events");
 
         /**
          *Set an Apater for the View Pager
@@ -71,6 +74,7 @@ public class Menu1 extends Fragment {
                 case 1 : return new Secondary();
                 case 2 : return new Tertiary();
                 case 3 : return new Quaternery();
+                case 4 : return new Pentarnery();
             }
             return null;
         }
@@ -91,14 +95,17 @@ public class Menu1 extends Fragment {
 
             switch (position){
                 case 0 :
-                    return "Cultural";
+                    return "All";
                 case 1 :
-                    return "Seminar";
+                    return "Cultural";
                 case 2 :
-                    return "Sports";
-                case 3 :
                     return "Technical";
+                case 3 :
+                    return "Sports";
+                case 4:
+                    return "Seminar";
             }
+            Log.e("OnCreate","1");
             return null;
         }
     }

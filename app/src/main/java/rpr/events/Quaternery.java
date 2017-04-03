@@ -37,6 +37,8 @@ public class Quaternery extends Fragment {
 
     public SQLiteDatabase db;
 
+    UserSessionManager session;
+
     private static Context context = null;
     private static final String TAG = Menu3.class.getSimpleName();
     private static final String TAG_EVENT_ID = "event_id";
@@ -44,12 +46,13 @@ public class Quaternery extends Fragment {
     private static final String TAG_TIME = "time";
     private static final String TAG_VENUE = "venue";
     private static final String TAG_DETAILS = "details";
+    private static String usertype_id;
 
     private static ProgressDialog pDialog;
     private ListView lv;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/php/ListAll.php";
+    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -60,11 +63,14 @@ public class Quaternery extends Fragment {
         //change R.layout.yourlayoutfilename for each of your fragments
         context = getActivity();
         createDatabase();
+        session = new UserSessionManager(getContext());
+        HashMap<String, String> user = session.getUserDetails();
+        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
         return inflater.inflate(R.layout.quaternery_layout, container, false);
 
     }
     protected void createDatabase(){
-        db=getActivity().openOrCreateDatabase("EventDB", Context.MODE_PRIVATE, null);
+        db=getActivity().openOrCreateDatabase("EventDB3", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS Events(event_id INTEGER NOT NULL, name VARCHAR NOT NULL,venue VARCHAR NOT NULL, time TIMESTAMP NOT NULL, details VARCHAR NOT NULL  );");
     }
 
@@ -77,13 +83,6 @@ public class Quaternery extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Menu 1");
-//        ProgressDialog pDialog;
-//        ListView lv;
-
-        // URL to get events JSON
-        //String ListURL = "http://10.1.1.19/~2015csb1021/php/ListAll.php";
 
         eventList = new ArrayList<>();
         lv = (ListView) getView().findViewById(R.id.listView);
@@ -111,55 +110,62 @@ public class Quaternery extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL);
+            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+usertype_id);
 
-            Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
 
-                    JSONArray events = jsonObj.getJSONArray("events");
+                    if (jsonObj.getBoolean("success") == true) {
+                        JSONArray events = jsonObj.getJSONArray("events");
 
 
-                    db.execSQL("DELETE FROM Events");
-                    for (int i = 0; i < events.length(); i++) {
-                        JSONObject c = events.getJSONObject(i);
+                        db.execSQL("DELETE FROM Events");
+                        for (int i = 0; i < events.length(); i++) {
+                            JSONObject c = events.getJSONObject(i);
 
-                        String event_id = c.getString(TAG_EVENT_ID);
-                        String name = c.getString(TAG_NAME);
-                        String time = c.getString(TAG_TIME);
-                        String venue = c.getString(TAG_VENUE);
-                        String details = c.getString(TAG_DETAILS);
+                            String event_id = c.getString(TAG_EVENT_ID);
+                            String name = c.getString(TAG_NAME);
+                            String time = c.getString(TAG_TIME);
+                            String venue = c.getString(TAG_VENUE);
+                            String details = c.getString(TAG_DETAILS);
 
-                        insertIntoDB(event_id, name, time, venue, details);
+                            insertIntoDB(event_id, name, time, venue, details);
 
-                        // tmp hash map for single event
-                        HashMap<String, String> event = new HashMap<>();
+                            // tmp hash map for single event
+                            HashMap<String, String> event = new HashMap<>();
 
-                        // adding each child node to HashMap key => value
-                        event.put(TAG_EVENT_ID, event_id);
-                        event.put(TAG_NAME, name);
-                        event.put(TAG_TIME, time);
-                        event.put(TAG_VENUE, venue);
-                        event.put(TAG_DETAILS, details);
+                            // adding each child node to HashMap key => value
+                            event.put(TAG_EVENT_ID, event_id);
+                            event.put(TAG_NAME, name);
+                            event.put(TAG_TIME, time);
+                            event.put(TAG_VENUE, venue);
+                            event.put(TAG_DETAILS, details);
 
-                        // adding event to event list
-                        eventList.add(event);
+                            // adding event to event list
+                            eventList.add(event);
+                            Log.e("OnCreate","3");
+
+                        }
+                        db.close();
+                        Log.e("OnCreate","2");
+
                     }
-                    db.close();
+                    else{
+                        Toast.makeText(context.getApplicationContext(),
+                                "No events found",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
 
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context.getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
+
                         }
                     });
 
@@ -248,7 +254,7 @@ public class Quaternery extends Fragment {
                     String time = (String) map.get(TAG_TIME);
                     String venue = (String) map.get(TAG_VENUE);
                     String details = (String) map.get(TAG_DETAILS);
-                    Intent intent = new Intent(Quaternery.context, ScrollingActivity.class);
+                    Intent intent = new Intent(Quaternery.context, EventDisplayUser.class);
                     intent.putExtra(TAG_EVENT_ID, event_id);
                     intent.putExtra(TAG_NAME, name);
                     intent.putExtra(TAG_TIME, time);

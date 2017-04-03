@@ -56,7 +56,6 @@ public class NavBar extends AppCompatActivity
 
         if(session.checkLogin())
             finish();
-        Log.e("OnCreate","9");
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
