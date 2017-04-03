@@ -27,7 +27,7 @@
         <activity
             android:name=".NavBar"
             android:label="@string/title_activity_nav_bar"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"

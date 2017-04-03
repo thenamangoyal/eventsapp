@@ -42,10 +42,10 @@ public class ScrollingActivity extends AppCompatActivity {
         final String details = intent.getStringExtra(TAG_DETAILS);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(TAG_NAME);
+        toolbar.setTitle(name);
 
         TextView description = (TextView) findViewById(R.id.tvcontent) ;
+        description.setText(details);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -63,7 +63,6 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
                 Calendar beginCal = Calendar.getInstance();
                 beginCal.setTime(date);
-               long startTime = beginCal.getTimeInMillis();
 
 
                 //long endTime = cal.getTimeInMillis()  + 60 * 60 * 1000;
@@ -75,7 +74,9 @@ public class ScrollingActivity extends AppCompatActivity {
                 intent.putExtra(Events.TITLE, name);
                 intent.putExtra(Events.DESCRIPTION,  details);
                 intent.putExtra(Events.EVENT_LOCATION, venue);
+                intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
                 intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginCal.getTimeInMillis());
+                intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginCal.getTimeInMillis()+60*60*1000);
 
                 // intent.putExtra(Events.RRULE, "FREQ=YEARLY");
 
