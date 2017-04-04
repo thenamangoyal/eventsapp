@@ -110,7 +110,7 @@ public class Quaternery extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+usertype_id);
+            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+usertype_id+"&category_id=3");
 
 
             if (jsonStr != null) {

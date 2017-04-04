@@ -21,7 +21,7 @@ public class Menu1 extends Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
-    public static int int_items = 5;
+    public static int int_items = 4;
 
     @Nullable
     @Override
@@ -74,7 +74,6 @@ public class Menu1 extends Fragment {
                 case 1 : return new Secondary();
                 case 2 : return new Tertiary();
                 case 3 : return new Quaternery();
-                case 4 : return new Pentarnery();
             }
             return null;
         }
@@ -102,8 +101,6 @@ public class Menu1 extends Fragment {
                     return "Technical";
                 case 3 :
                     return "Sports";
-                case 4:
-                    return "Seminar";
             }
             Log.e("OnCreate","1");
             return null;
