@@ -223,9 +223,8 @@ public class Menu2 extends Fragment {
                     Toast.makeText(context, "Please specify Details", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    String url = "http://10.1.1.19/~2015csb1021/event/addEvent.php";
 
-                    StringRequest registerRequest = new StringRequest(Request.Method.POST, url,
+                    StringRequest registerRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.addEvent_url),
                             new Response.Listener<String>()
                             {
                                 @Override
@@ -291,9 +290,8 @@ public class Menu2 extends Fragment {
     private void getusertype(){
         //Creating a string request
 
-        String url = "http://10.1.1.19/~2015csb1021/event/usertype.php";
 
-        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, getResources().getString(R.string.usertype_url),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -337,9 +335,8 @@ public class Menu2 extends Fragment {
     private void getcategory(){
         //Creating a string request
 
-        String url = "http://10.1.1.19/~2015csb1021/event/category.php";
 
-        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, getResources().getString(R.string.categoryRegister_url),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -13,6 +13,8 @@ package rpr.events;
         import android.os.Bundle;
         import android.support.annotation.Nullable;
         import android.support.v4.app.Fragment;
+        import android.support.v7.widget.GridLayoutManager;
+        import android.support.v7.widget.RecyclerView;
         import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
@@ -24,19 +26,27 @@ package rpr.events;
         import android.widget.Toast;
         import android.database.Cursor;
 
+        import com.android.volley.Request;
+        import com.android.volley.RequestQueue;
+        import com.android.volley.Response;
+        import com.android.volley.VolleyError;
+        import com.android.volley.toolbox.StringRequest;
+        import com.android.volley.toolbox.Volley;
+
         import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
         import java.util.ArrayList;
         import java.util.HashMap;
+        import java.util.Map;
 
 
 
 public class Primary extends Fragment {
 
-    public SQLiteDatabase db;
 
+    public SQLiteDatabase db;
     UserSessionManager session;
 
     private static Context context = null;
@@ -49,34 +59,46 @@ public class Primary extends Fragment {
     private static String usertype_id;
 
     private static ProgressDialog pDialog;
-    private ListView lv;
+    private RecyclerView recyclerView;
+
+    private GridLayoutManager gridLayoutManager;
+    private eventAdapter adapter;
+
+    private int loadlimit;
+    boolean loading;
+    boolean error_load;
+    private int category_id;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
 
-    ArrayList<HashMap<String, String>> eventList;
+    ArrayList<eventItem> eventList;
 
+    protected void createDatabase(){
+        db=getActivity().openOrCreateDatabase("EventDB", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS Events"+category_id+" (event_id INTEGER NOT NULL, category_id INTEGER NOT NULL, user_id INTEGER NOT NULL, usertype_id INTEGER NOT NULL, name VARCHAR NOT NULL, details VARCHAR NOT NULL, time TIMESTAMP NOT NULL,venue VARCHAR NOT NULL  );");
+    }
+
+    protected void insertIntoDB(String Event_id, String Category_id, String User_id, String Usertype_id, String Name, String Details, String Time, String Venue){
+
+        String query = "INSERT INTO Events"+category_id+" (event_id,category_id,user_id,usertype_id,name, details, time, venue) VALUES('"+Event_id+"','"+Category_id+"','"+User_id+"','"+Usertype_id+"', '"+Name+"', '"+Details+"', '"+Time+"', '"+Venue+"');";
+
+        db.execSQL(query);
+    }
     @Override
     @Nullable
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         context = getActivity();
-        createDatabase();
+
         session = new UserSessionManager(getContext());
         HashMap<String, String> user = session.getUserDetails();
         usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
+        category_id =getArguments().getInt("category_id", 0);
+
+        createDatabase();
         return inflater.inflate(R.layout.primary_layout, container, false);
 
-    }
-    protected void createDatabase(){
-        db=getActivity().openOrCreateDatabase("EventDB0", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS Events(event_id INTEGER NOT NULL, name VARCHAR NOT NULL,venue VARCHAR NOT NULL, time TIMESTAMP NOT NULL, details VARCHAR NOT NULL  );");
-    }
-
-    protected void insertIntoDB(String Event_id, String Name, String Time, String Venue, String Details){
-        String query = "INSERT INTO Events(event_id,name,venue, time, details) VALUES('"+Event_id+"', '"+Name+"', '"+Time+"', '"+Venue+"', '"+Details+"');";
-        db.execSQL(query);
     }
 
 
@@ -85,184 +107,139 @@ public class Primary extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         eventList = new ArrayList<>();
-        lv = (ListView) getView().findViewById(R.id.listView);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
+        loadlimit = 0;
+        loading = false;
+        error_load = false;
+        load_data_from_server(loadlimit++);
 
-        new Primary.Getevents().execute();
+        gridLayoutManager = new GridLayoutManager(context,1);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        adapter = new eventAdapter(context,eventList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(getActivity(), null));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if(!error_load && !loading && gridLayoutManager.findLastCompletelyVisibleItemPosition() == eventList.size()-1){
+                    loading = true;
+                    load_data_from_server(loadlimit++);
+                }
+
+            }
+        });
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
-    private class Getevents extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(Primary.context);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            HttpHandler sh = new HttpHandler();
-
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+usertype_id);
+        db.close();
+    }
 
 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+    private void load_data_from_server(final int id) {
+        final ProgressDialog dialog = new ProgressDialog(context);
 
-
-                    if (jsonObj.getBoolean("success") == true) {
-                        JSONArray events = jsonObj.getJSONArray("events");
-
-
-                        db.execSQL("DELETE FROM Events");
-                        for (int i = 0; i < events.length(); i++) {
-                            JSONObject c = events.getJSONObject(i);
-
-                            String event_id = c.getString(TAG_EVENT_ID);
-                            String name = c.getString(TAG_NAME);
-                            String time = c.getString(TAG_TIME);
-                            String venue = c.getString(TAG_VENUE);
-                            String details = c.getString(TAG_DETAILS);
-
-                            insertIntoDB(event_id, name, time, venue, details);
-
-                            // tmp hash map for single event
-                            HashMap<String, String> event = new HashMap<>();
-
-                            // adding each child node to HashMap key => value
-                            event.put(TAG_EVENT_ID, event_id);
-                            event.put(TAG_NAME, name);
-                            event.put(TAG_TIME, time);
-                            event.put(TAG_VENUE, venue);
-                            event.put(TAG_DETAILS, details);
-
-                            // adding event to event list
-                            eventList.add(event);
-                        }
-                        db.close();
-                    }
-                    else{
-                        Toast.makeText(context.getApplicationContext(),
-                                "No events found",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-
-                } catch (final JSONException e) {
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    });
-
-                }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-                getActivity().runOnUiThread(new Runnable() {
+        StringRequest eventRequest= new StringRequest(Request.Method.POST, getResources().getString(R.string.listAll_url),
+                new Response.Listener<String>()
+                {
                     @Override
-                    public void run() {
-                        Toast.makeText(context.getApplicationContext(),
-                                "No Network",
-                                Toast.LENGTH_LONG)
-                                .show();
+                    public void onResponse(String response)
+                    {
+                        try{
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+                                JSONArray array = jsonResponse.getJSONArray("events");
+                                db.execSQL("DELETE FROM Events"+category_id);
+                                for (int i=0; i<array.length(); i++){
+
+                                    JSONObject c = array.getJSONObject(i);
+
+                                    eventItem data = new eventItem(c.getInt("event_id"),c.getInt("category_id"),c.getInt("user_id"),c.getInt("usertype_id"),c.getString("name"),
+                                            c.getString("details"),c.getString("time"),c.getString("venue"));
+
+                                    insertIntoDB(c.getString("event_id"),c.getString("category_id"),c.getString("user_id"),c.getString("usertype_id"),c.getString("name"), c.getString("details"),c.getString("time"),c.getString("venue"));
+
+                                    eventList.add(data);
+
+                                }
+
+                                adapter.notifyDataSetChanged();
+                                loading = false;
+
+                            } else {
+                            }
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
-                });
-
-
-
-                String query = "SELECT * FROM Events WHERE 1";
-                //Cursor points to a location in your results
-                Cursor recordSet = db.rawQuery(query, null);
-                //Move to the first row in your results
-                recordSet.moveToFirst();
-
-
-                //Position after the last row means the end of the results
-                while (!recordSet.isAfterLast()) {
-
-
-                    String event_id = recordSet.getString(recordSet.getColumnIndex("event_id"));
-                    String name = recordSet.getString(recordSet.getColumnIndex("name"));
-                    String time = recordSet.getString(recordSet.getColumnIndex("time"));
-                    String venue = recordSet.getString(recordSet.getColumnIndex("venue"));
-                    String details = recordSet.getString(recordSet.getColumnIndex("details"));
-
-
-                    HashMap<String, String> event = new HashMap<>();
-
-                    // adding each child node to HashMap key => value
-                    event.put(TAG_EVENT_ID, event_id);
-                    event.put(TAG_NAME, name);
-                    event.put(TAG_TIME, time);
-                    event.put(TAG_VENUE, venue);
-                    event.put(TAG_DETAILS, details);
-
-                    // adding event to event list
-                    eventList.add(event);
-
-
-                    recordSet.moveToNext();
-
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // error
+                if (!error_load){
+                    error_load = true;
+                    use_old_data();
                 }
-
-                db.close();
-
 
 
             }
-
-            return null;
         }
+        ){
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("limit", id+"");
+                params.put("usertype_id", usertype_id+"");
+                params.put("category_id", category_id+"");
+                return params;
+            }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-            ListAdapter adapter = new SimpleAdapter(
-                    Primary.context, eventList,
-                    R.layout.event_list_item, new String[]{TAG_NAME, TAG_TIME, TAG_VENUE},
-                    new int[]{R.id.name, R.id.time, R.id.venue});
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(eventRequest);
 
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    HashMap<String, String> map = (HashMap<String, String>) parent.getItemAtPosition(position);
-                    String event_id = (String) map.get(TAG_EVENT_ID);
-                    String name = (String) map.get(TAG_NAME);
-                    String time = (String) map.get(TAG_TIME);
-                    String venue = (String) map.get(TAG_VENUE);
-                    String details = (String) map.get(TAG_DETAILS);
-                    Intent intent = new Intent(Primary.context, EventDisplayUser.class);
-                    intent.putExtra(TAG_EVENT_ID, event_id);
-                    intent.putExtra(TAG_NAME, name);
-                    intent.putExtra(TAG_TIME, time);
-                    intent.putExtra(TAG_VENUE, venue);
-                    intent.putExtra(TAG_DETAILS, details);
-                    Primary.context.startActivity(intent);
-
-                }
-            });
-        }
 
     }
+
+    private void use_old_data(){
+        String query = "SELECT * FROM Events"+category_id;
+        //Cursor points to a location in your results
+        Cursor recordSet = db.rawQuery(query, null);
+        //Move to the first row in your results
+        recordSet.moveToFirst();
+
+
+        //Position after the last row means the end of the results
+        while (!recordSet.isAfterLast()) {
+
+            eventItem data = new eventItem(recordSet.getInt(recordSet.getColumnIndex("event_id")),recordSet.getInt(recordSet.getColumnIndex("category_id")),recordSet.getInt(recordSet.getColumnIndex("user_id")),recordSet.getInt(recordSet.getColumnIndex("usertype_id")),recordSet.getString(recordSet.getColumnIndex("name")),
+                    recordSet.getString(recordSet.getColumnIndex("details")),recordSet.getString(recordSet.getColumnIndex("time")),recordSet.getString(recordSet.getColumnIndex("venue")));
+
+
+            // adding event to event list
+            eventList.add(data);
+
+
+            recordSet.moveToNext();
+
+        }
+        recordSet.close();
+        adapter.notifyDataSetChanged();
+    }
+
+
 
 
 }

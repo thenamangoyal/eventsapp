@@ -52,7 +52,7 @@ public class Quaternery extends Fragment {
     private ListView lv;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
+    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php?category_id=3&usertype_id=";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -87,12 +87,12 @@ public class Quaternery extends Fragment {
         eventList = new ArrayList<>();
         lv = (ListView) getView().findViewById(R.id.listView);
 
-        new Quaternery.Getevents().execute();
+        new Quaternery.Getevents4().execute();
 
     }
 
 
-    private class Getevents extends AsyncTask<Void, Void, Void> {
+    private class Getevents4 extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -110,7 +110,7 @@ public class Quaternery extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+usertype_id+"&category_id=3");
+            String jsonStr = sh.makeServiceCall(ListURL+usertype_id);
 
 
             if (jsonStr != null) {

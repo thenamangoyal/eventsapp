@@ -91,9 +91,8 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     else{
 
-                        String url = "http://10.1.1.19/~2015csb1021/event/Register.php";
 
-                        StringRequest registerRequest = new StringRequest(Request.Method.POST, url,
+                        StringRequest registerRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.Register_url),
                                 new Response.Listener<String>()
                                 {
                                     @Override
@@ -132,6 +131,8 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // error
+
+                                Toast.makeText(getApplicationContext(), "Couldn't connect to internet",Toast.LENGTH_SHORT).show();
                             }
                         }
                         ) {
@@ -161,9 +162,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void getusertype(){
             //Creating a string request
 
-        String url = "http://10.1.1.19/~2015csb1021/event/usertypeRegister.php";
 
-        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, getResources().getString(R.string.usertypeRegister_url),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

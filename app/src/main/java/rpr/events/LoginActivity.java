@@ -92,9 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                         final String email = etEmail.getText().toString().trim();
                         final String password = etPassword.getText().toString();
 
-                        String url = "http://10.1.1.19/~2015csb1021/event/Login.php";
 
-                        StringRequest loginRequest = new StringRequest(Request.Method.POST, url,
+                        StringRequest loginRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.Login_url),
                                 new Response.Listener<String>()
                                 {
                                     @Override
@@ -139,6 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
                                         // error
+
+                                        Toast.makeText(getApplicationContext(), "Couldn't connect to internet",Toast.LENGTH_SHORT).show();
                                     }
                                 }
                         ) {

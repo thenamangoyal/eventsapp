@@ -86,12 +86,12 @@ public class Secondary extends Fragment {
         eventList = new ArrayList<>();
         lv = (ListView) getView().findViewById(R.id.listView);
 
-        new Secondary.Getevents().execute();
+//        new Secondary.Getevents2().execute();
 
     }
 
 
-    private class Getevents extends AsyncTask<Void, Void, Void> {
+    private class Getevents2 extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {

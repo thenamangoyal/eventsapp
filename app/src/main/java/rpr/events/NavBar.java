@@ -83,7 +83,7 @@ public class NavBar extends AppCompatActivity
 
         Nameview.setText(name);
         Emailview.setText(email);
-        displaySelectedScreen(R.id.nav_menu1);
+        displaySelectedScreen(R.id.nav_list_events);
 
 
     }
@@ -133,16 +133,16 @@ public class NavBar extends AppCompatActivity
 
         //initializing the fragment object which is selected
         switch (itemId) {
-            case R.id.nav_menu1:
+            case R.id.nav_list_events:
                 fragment = new Menu1();
                 break;
-            case R.id.nav_menu2:
+            case R.id.nav_organise_event:
                 fragment = new Menu2();
                 break;
-            case R.id.nav_menu3:
+            case R.id.nav_bookmarks:
                 fragment = new Menu3();
                 break;
-            case R.id.nav_menu4:
+            case R.id.nav_logout:
                 session.logoutUser();
                 finish();
                 break;

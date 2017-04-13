@@ -69,18 +69,12 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
 
-                <Spinner
-                    android:id="@+id/usertype_spinner"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/select_an_item"/>
-
-            </android.support.v7.widget.Toolbar>
+            <Spinner
+                android:id="@+id/usertype_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/select_an_item"/>
 
             <Button
                 android:id="@+id/bRegister"

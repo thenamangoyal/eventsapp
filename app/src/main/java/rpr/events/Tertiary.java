@@ -37,6 +37,8 @@ public class Tertiary extends Fragment {
 
     public SQLiteDatabase db;
 
+    UserSessionManager session;
+
     private static Context context = null;
     private static final String TAG = Menu3.class.getSimpleName();
     private static final String TAG_EVENT_ID = "event_id";
@@ -46,13 +48,11 @@ public class Tertiary extends Fragment {
     private static final String TAG_DETAILS = "details";
     private static String usertype_id;
 
-    UserSessionManager session;
-
     private static ProgressDialog pDialog;
     private ListView lv;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
+    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php?category_id=2&usertype_id=";
 
     ArrayList<HashMap<String, String>> eventList;
 
@@ -83,15 +83,16 @@ public class Tertiary extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    eventList = new ArrayList<>();
+
+        eventList = new ArrayList<>();
         lv = (ListView) getView().findViewById(R.id.listView);
 
-        new Tertiary.Getevents().execute();
+        new Tertiary.Getevents3().execute();
 
     }
 
 
-    private class Getevents extends AsyncTask<Void, Void, Void> {
+    private class Getevents3 extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -109,55 +110,58 @@ public class Tertiary extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+"?usertype_id="+usertype_id+"&category_id=2");
+            String jsonStr = sh.makeServiceCall(ListURL+usertype_id);
 
-            Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
 
-                    JSONArray events = jsonObj.getJSONArray("events");
+                    if (jsonObj.getBoolean("success") == true) {
+                        JSONArray events = jsonObj.getJSONArray("events");
 
 
-                    db.execSQL("DELETE FROM Events");
-                    for (int i = 0; i < events.length(); i++) {
-                        JSONObject c = events.getJSONObject(i);
+                        db.execSQL("DELETE FROM Events");
+                        for (int i = 0; i < events.length(); i++) {
+                            JSONObject c = events.getJSONObject(i);
 
-                        String event_id = c.getString(TAG_EVENT_ID);
-                        String name = c.getString(TAG_NAME);
-                        String time = c.getString(TAG_TIME);
-                        String venue = c.getString(TAG_VENUE);
-                        String details = c.getString(TAG_DETAILS);
+                            String event_id = c.getString(TAG_EVENT_ID);
+                            String name = c.getString(TAG_NAME);
+                            String time = c.getString(TAG_TIME);
+                            String venue = c.getString(TAG_VENUE);
+                            String details = c.getString(TAG_DETAILS);
 
-                        insertIntoDB(event_id, name, time, venue, details);
+                            insertIntoDB(event_id, name, time, venue, details);
 
-                        // tmp hash map for single event
-                        HashMap<String, String> event = new HashMap<>();
+                            // tmp hash map for single event
+                            HashMap<String, String> event = new HashMap<>();
 
-                        // adding each child node to HashMap key => value
-                        event.put(TAG_EVENT_ID, event_id);
-                        event.put(TAG_NAME, name);
-                        event.put(TAG_TIME, time);
-                        event.put(TAG_VENUE, venue);
-                        event.put(TAG_DETAILS, details);
+                            // adding each child node to HashMap key => value
+                            event.put(TAG_EVENT_ID, event_id);
+                            event.put(TAG_NAME, name);
+                            event.put(TAG_TIME, time);
+                            event.put(TAG_VENUE, venue);
+                            event.put(TAG_DETAILS, details);
 
-                        // adding event to event list
-                        eventList.add(event);
+                            // adding event to event list
+                            eventList.add(event);
+                        }
+                        db.close();
                     }
-                    db.close();
+                    else{
+                        Toast.makeText(context.getApplicationContext(),
+                                "No events found",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
 
                 } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context.getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
+
                         }
                     });
 
@@ -246,7 +250,7 @@ public class Tertiary extends Fragment {
                     String time = (String) map.get(TAG_TIME);
                     String venue = (String) map.get(TAG_VENUE);
                     String details = (String) map.get(TAG_DETAILS);
-                    Intent intent = new Intent(Tertiary.context, ScrollingActivity.class);
+                    Intent intent = new Intent(Tertiary.context, EventDisplayUser.class);
                     intent.putExtra(TAG_EVENT_ID, event_id);
                     intent.putExtra(TAG_NAME, name);
                     intent.putExtra(TAG_TIME, time);

@@ -1,66 +1,159 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_event_display_user"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:background="#fff"
     tools:context="rpr.events.EventDisplayUser">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="fill_parent"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:id="@+id/tvname"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textSize="24dp"
+            android:text="Name"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Date"
+                android:textColor="@color/colorAccent"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:gravity="center"
+                android:padding="10dp"
+
+                android:textColor="@color/colorAccent"
+                android:text="Time"
+                android:textSize="20dp" />
+
+
+
+
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent">
+
+
+
+            <TextView
+                android:id="@+id/tvVenue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Venue"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="20dp" />
+
+
+
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvdetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:padding="20dp"
+
+                android:textSize="20dp"
+                android:text="Details" />
+            <TextView
+                android:id="@+id/tvOrganiser"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
+
+                android:textSize="16dp"
+                android:text="Organiser" />
+            </LinearLayout>
+            </ScrollView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dip"
-        android:paddingTop="6dip"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="32sp"
-/>
+        android:orientation="horizontal"
+
+        android:layout_alignParentBottom="true">
+
+        <Button
+
+            android:id="@+id/tvAddCalender"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:padding="20dp"
+            android:text="Add to Calender"/>
+
+        <Button
+
+            android:id="@+id/tvBookmark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="8dp"
+            android:padding="20dp"
+            android:text="Bookmark"/>
 
 
-    <TextView
-        android:id="@+id/details"
-        android:layout_below="@+id/name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:layout_marginTop="16dp"
-        android:paddingBottom="4dip"/>
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_below="@+id/details"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="4dip"
-        android:textSize="24sp"
 
-        android:textColor="@color/colorAccent"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/venue"
-        android:layout_below="@+id/time"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="4dip"
-        android:textSize="16sp"
-        android:textColor="@color/colorPrimaryDark"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="49dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
 </RelativeLayout>
+

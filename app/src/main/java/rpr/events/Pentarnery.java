@@ -52,7 +52,7 @@ public class Pentarnery extends Fragment {
     private ListView lv;
 
     // URL to get events JSON
-    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php";
+    private static String ListURL = "http://10.1.1.19/~2015csb1021/event/listAll.php?category_id=4&usertype_id=";
     ArrayList<HashMap<String, String>> eventList;
 
     @Override
@@ -108,7 +108,7 @@ public class Pentarnery extends Fragment {
             HttpHandler sh = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(ListURL+"?usertype_id="+"?usertype_id="+usertype_id+"&category_id=4");
+            String jsonStr = sh.makeServiceCall(ListURL+usertype_id);
 
             Log.e(TAG, "Response from url: " + jsonStr);
 

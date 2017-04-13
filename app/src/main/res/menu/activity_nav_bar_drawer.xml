@@ -3,24 +3,32 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_menu1"
-            android:icon="@mipmap/ic_launcher"
+            android:id="@+id/nav_list_events"
+            android:icon="@drawable/ic_menu_share"
             android:title="List Events" />
         <item
-            android:id="@+id/nav_menu2"
-            android:icon="@mipmap/ic_launcher"
+            android:id="@+id/nav_organise_event"
+            android:icon="@drawable/ic_sync_black_24dp"
             android:title="Organise Event" />
         <item
-            android:id="@+id/nav_menu3"
-            android:icon="@mipmap/ic_launcher"
-            android:title="Menu 3" />
-
-        <item
-            android:id="@+id/nav_menu4"
-            android:icon="@mipmap/ic_launcher"
-            android:title="Logout" />
+            android:id="@+id/nav_bookmarks"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="Bookmarks" />
 
     </group>
+
+    <item android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/nav_profile_manage"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Manage Profile" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="Logout" />
+        </menu>
+    </item>
 
 
 
