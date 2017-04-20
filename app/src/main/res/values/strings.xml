@@ -1,20 +1,20 @@
 <resources>
-    <string name="listAll_url">http://192.168.0.104:8080/event/listAll.php"</string>
-    <string name="event_display_url">http://192.168.0.104:8080/event/getEvent.php</string>
-    <string name="category_url">http://192.168.0.104:8080/event/category.php</string>
+    <string name="listAll_url">http://10.1.1.19/~2015csb1021/event/listAll.php"</string>
+    <string name="event_display_url">http://10.1.1.19/~2015csb1021/event/getEvent.php</string>
+    <string name="category_url">http://10.1.1.19/~2015csb1021/event/category.php</string>
 
 
-    <string name="addEvent_url">http://192.168.0.104:8080/event/addEvent.php</string>
-    <string name="usertype_url">http://192.168.0.104:8080/event/usertype.php</string>
-    <string name="categoryRegister_url">http://192.168.0.104:8080/event/categoryRegister.php</string>
+    <string name="addEvent_url">http://10.1.1.19/~2015csb1021/event/addEvent.php</string>
+    <string name="usertype_url">http://10.1.1.19/~2015csb1021/event/usertype.php</string>
+    <string name="categoryRegister_url">http://10.1.1.19/~2015csb1021/event/categoryRegister.php</string>
 
 
-    <string name="Register_url">http://192.168.0.104:8080/event/Register.php</string>
-    <string name="Login_url">http://192.168.0.104:8080/event/Login.php</string>
-    <string name="usertypeRegister_url">http://192.168.0.104:8080/event/usertypeRegister.php</string>
+    <string name="Register_url">http://10.1.1.19/~2015csb1021/event/Register.php</string>
+    <string name="Login_url">http://10.1.1.19/~2015csb1021/event/Login.php</string>
+    <string name="usertypeRegister_url">http://10.1.1.19/~2015csb1021/event/usertypeRegister.php</string>
 
-    <string name="getBookmark_url">http://192.168.0.104:8080/event/getBookmark.php</string>
-    <string name="toggleBookmark_url">http://192.168.0.104:8080/event/toggleBookmark.php</string>
+    <string name="getBookmark_url">http://10.1.1.19/~2015csb1021/event/getBookmark.php</string>
+    <string name="toggleBookmark_url">http://10.1.1.19/~2015csb1021/event/toggleBookmark.php</string>
 
 
     <string name="app_name">Events</string>
