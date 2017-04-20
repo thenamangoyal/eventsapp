@@ -20,140 +20,178 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
             </android.support.v7.widget.Toolbar>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header_cover_image"
+                android:background="@color/colorPrimary"
+                android:paddingBottom="16dp">
+
+
+
+                <TextView
+                    android:id="@+id/tvname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Name"
+                    android:textColor="#fff"
+                    android:textSize="32dp" />
+
+
+            </RelativeLayout>
 
         </android.support.design.widget.AppBarLayout>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="#fff"
-    tools:context="rpr.events.EventDisplayUser">
-
+    android:background="#fff">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/header_cover_image"
-            android:background="#ebca0707"
-            android:elevation="4dp"
-            android:paddingBottom="24dp">
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_date_range_black_24dp" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/ivContactItem1"
+                android:text="Date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDate"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/ivContactItem1"
+                android:text="Time"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/ivContactItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_location_on_black" />
+
+            <TextView
+                android:id="@+id/tvVenue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/ivContactItem2"
+                android:text="Venue"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
+
+
+
+        </RelativeLayout>
+
+        <include layout="@layout/item_divider" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
 
 
 
             <TextView
-                android:id="@+id/tvname"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvdetails"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"
-                android:text="Name"
-                android:textColor="#fff"
-                android:textSize="32dp"
-                android:textStyle="bold" />
+                android:text="Details"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
 
 
         </RelativeLayout>
 
 
+        <include layout="@layout/item_divider" />
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/activity_horizontal_margin">
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#fff"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Date"
-                android:textColor="@color/colorAccent"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#fff"
-                android:gravity="center"
-                android:padding="10dp"
-
-                android:textColor="@color/colorAccent"
-                android:text="Time"
-                android:textSize="20dp" />
-
-
-
-
-        </LinearLayout>
-        <LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent">
-
-
-
-            <TextView
-                android:id="@+id/tvVenue"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#fff"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="Venue"
-                android:textColor="@color/cardview_dark_background"
-                android:textSize="20dp" />
-
-
-
-
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent"
-                android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvdetails"
-                android:layout_width="fill_parent"
+            <ImageView
+                android:id="@+id/ivContactItem5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#fff"
-                android:padding="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_person_black_24dp" />
 
-                android:textSize="20dp"
-                android:text="Details" />
             <TextView
                 android:id="@+id/tvOrganiser"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#fff"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="10dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/ivContactItem5"
+                android:layout_toStartOf="@+id/chkState5"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Organiser"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#212121" />
 
-                android:textSize="16dp"
-                android:text="Organiser" />
-            </LinearLayout>
-            </ScrollView>
+        </RelativeLayout>
 
     </LinearLayout>
-
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -196,5 +234,6 @@
 
 
 </RelativeLayout>
+
 </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
