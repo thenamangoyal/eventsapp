@@ -124,14 +124,15 @@ public class NavBar extends AppCompatActivity
                 fragment = new OrganiseEvent();
                 break;
             case R.id.nav_bookmarks:
+                fragment = new BookmarksList();
+                break;
+
+            case R.id.nav_profile_manage:
                 fragment = new UserProfile();
                 break;
             case R.id.nav_logout:
                 session.logoutUser();
                 finish();
-                break;
-            case R.id.nav_profile_manage:
-                fragment = new UserProfile();
                 break;
         }
 
