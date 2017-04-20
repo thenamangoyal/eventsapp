@@ -17,6 +17,8 @@
     <string name="toggleBookmark_url">http://10.1.1.19/~2015csb1021/event/toggleBookmark.php</string>
 
 
+    <string name="changePassword_url">http://10.1.1.19/~2015csb1021/event/changePassword.php</string>
+
     <string name="app_name">Events</string>
     <string name="title_activity_settings">Settings</string>
 

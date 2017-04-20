@@ -7,14 +7,13 @@ package rpr.events;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -47,7 +46,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Menu2 extends Fragment {
+public class OrganiseEvent extends Fragment {
 
     @Nullable
     private static Context context = null;
@@ -65,7 +64,9 @@ public class Menu2 extends Fragment {
 
         context = getActivity();
         session = new UserSessionManager(context);
-        return inflater.inflate(R.layout.fragment_menu_2, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Organise Event");
+        return inflater.inflate(R.layout.fragment_organise_event, container, false);
 
     }
 
@@ -74,7 +75,6 @@ public class Menu2 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Organise Event");
         categorySpinner = (Spinner) getView().findViewById(R.id.category_spinner);
         usertypeSpinner = (Spinner) getView().findViewById(R.id.usertype_spinner);
         txtDate = (TextView) getView().findViewById(R.id.in_date);
@@ -241,7 +241,7 @@ public class Menu2 extends Fragment {
                                             Toast.makeText(context, "Event " + event_name + " was added Successfully ", Toast.LENGTH_SHORT).show();
                                             FragmentManager fragmentManager2 = getFragmentManager();
                                             FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-                                            fragmentTransaction2.replace(R.id.content_frame, new Menu1());
+                                            fragmentTransaction2.replace(R.id.content_frame, new ListEventsTabs());
                                             fragmentTransaction2.commit();
 
                                         } else {
@@ -336,7 +336,7 @@ public class Menu2 extends Fragment {
         //Creating a string request
 
 
-        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, getResources().getString(R.string.categoryRegister_url),
+        StringRequest categoryRequest = new StringRequest(Request.Method.GET, getResources().getString(R.string.categoryRegister_url),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -374,7 +374,7 @@ public class Menu2 extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
-        requestQueue.add(usertypeRequest);
+        requestQueue.add(categoryRequest);
 
     }
 }

@@ -1,9 +1,12 @@
 package rpr.events;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,10 +38,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPassword;
     private Spinner usertypeSpinner;
     private Button bRegister;
+    private Context context = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        context = this;
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -64,17 +69,83 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        etName.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (etName.getText().toString().length() == 0){
+                    etName.setError("Please enter name");
+                }
+                else{
+                    etName.setError(null);
+                }
+
+            }
+        });
+
+        etEmail.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                boolean iitrpr_email = etEmail.getText().toString().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in");
+                if (!iitrpr_email){
+                    etEmail.setError("Invalid Email");
+                }
+                else{
+                    etEmail.setError(null);
+                }
+
+            }
+        });
+
+
+
+        etPassword.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (etPassword.getText().toString().length() < 8){
+                    etPassword.setError("Atleast 8 characters");
+                }
+                else{
+                    etPassword.setError(null);
+                }
+
+            }
+        });
+
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (etName.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Name", Toast.LENGTH_SHORT).show();
                 }
-                else if(etEmail.getText().toString().trim().equals("")){
-                    Toast.makeText(getApplicationContext(), "Please specify Email", Toast.LENGTH_SHORT).show();
-                }
-                else if(etPassword.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
+                else if(etEmail.getText().toString().trim().equals("") || !etEmail.toString().trim().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in")){
+                    Toast.makeText(getApplicationContext(), "Please specify valid Email", Toast.LENGTH_SHORT).show();
                 }
                 else if(etPassword.getText().toString().length() < 8){
                     Toast.makeText(getApplicationContext(), "Please specify Password of atleast 8 characters", Toast.LENGTH_SHORT).show();
@@ -85,11 +156,6 @@ public class RegisterActivity extends AppCompatActivity {
                     final int usertype_id = usertypeSpinner.getSelectedItemPosition()+1;
                     final String password = etPassword.getText().toString();
 
-                    boolean iitrpr_email = email.matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in");
-                    if (!iitrpr_email){
-                        Toast.makeText(getApplicationContext(), "Please enter iitrpr email only", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
 
 
                         StringRequest registerRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.Register_url),
@@ -149,11 +215,11 @@ public class RegisterActivity extends AppCompatActivity {
                             }
 
                         };
-                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                        RequestQueue queue = Volley.newRequestQueue(context);
                         queue.add(registerRequest);
 
 
-                    }
+
                 }
             }
         });
@@ -182,7 +248,8 @@ public class RegisterActivity extends AppCompatActivity {
                                         usertypes.add(obj.getString("name"));
 
                                 }
-                                usertypeSpinner.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, usertypes));
+
+                                usertypeSpinner.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, usertypes));
 
                                 //Calling method getStudents to get the students from the JSON Array
                             } catch (JSONException e) {
@@ -198,7 +265,7 @@ public class RegisterActivity extends AppCompatActivity {
                     });
 
             //Creating a request queue
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
 
             //Adding request to the queue
             requestQueue.add(usertypeRequest);

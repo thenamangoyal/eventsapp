@@ -5,25 +5,16 @@ package rpr.events;
  */
 
         import android.app.ProgressDialog;
-        import android.database.sqlite.SQLiteOpenHelper;
         import android.content.Context;
-        import android.content.Intent;
         import android.database.sqlite.SQLiteDatabase;
-        import android.os.AsyncTask;
         import android.os.Bundle;
         import android.support.annotation.Nullable;
         import android.support.v4.app.Fragment;
         import android.support.v7.widget.GridLayoutManager;
         import android.support.v7.widget.RecyclerView;
-        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
-        import android.widget.AdapterView;
-        import android.widget.ListAdapter;
-        import android.widget.ListView;
-        import android.widget.SimpleAdapter;
-        import android.widget.Toast;
         import android.database.Cursor;
 
         import com.android.volley.Request;
@@ -43,14 +34,14 @@ package rpr.events;
 
 
 
-public class Primary extends Fragment {
+public class DisplayEventList extends Fragment {
 
 
     public SQLiteDatabase db;
     UserSessionManager session;
 
     private static Context context = null;
-    private static final String TAG = Menu3.class.getSimpleName();
+    private static final String TAG = UserProfile.class.getSimpleName();
     private static final String TAG_EVENT_ID = "event_id";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";
@@ -97,7 +88,7 @@ public class Primary extends Fragment {
         category_id =getArguments().getInt("category_id", 0);
 
         createDatabase();
-        return inflater.inflate(R.layout.primary_layout, container, false);
+        return inflater.inflate(R.layout.display_event_list_layout, container, false);
 
     }
 

@@ -14,21 +14,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -38,9 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class Menu1 extends Fragment {
+public class ListEventsTabs extends Fragment {
 
 
     private Context context = null;
@@ -68,18 +61,30 @@ public class Menu1 extends Fragment {
         getcategory();
 
 
-
         return x;
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 
     protected void createDatabase(){
         db=getActivity().openOrCreateDatabase("EventDB", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS category (category_id INTEGER NOT NULL, name VARCHAR NOT NULL);");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS usertype (usertype_id INTEGER NOT NULL, name VARCHAR NOT NULL);");
     }
 
-    protected void insertIntoDB(String category_id, String name){
+    protected void insertIntoDBcategory(String category_id, String name){
         String query = "INSERT INTO category (category_id,name) VALUES('"+category_id+"', '"+name+"');";
+        db.execSQL(query);
+    }
+
+    protected void insertIntoDBusertype(String usertype_id, String name){
+        String query = "INSERT INTO usertype (usertype_id,name) VALUES('"+usertype_id+"', '"+name+"');";
         db.execSQL(query);
     }
 
@@ -113,11 +118,9 @@ public class Menu1 extends Fragment {
 
                                     //Adding the name of the student to array list
                                     categories.add(obj.getString("name"));
-                                    insertIntoDB(obj.getString("category_id"), obj.getString("name"));
+                                    insertIntoDBcategory(obj.getString("category_id"), obj.getString("name"));
 
                                 }
-
-                                db.close();
                                 viewPager.setAdapter(new dynamicAdapter(getChildFragmentManager(),categories));
 
                                 tabLayout.post(new Runnable() {
@@ -164,11 +167,11 @@ public class Menu1 extends Fragment {
         Cursor recordSet = db.rawQuery(query, null);
         if (recordSet.getCount() == 0){
             db.execSQL("DELETE FROM category");
-            insertIntoDB("0", "All");
-            insertIntoDB("1", "Cultural");
-            insertIntoDB("2", "Technical");
-            insertIntoDB("3", "Sports");
-            insertIntoDB("4", "Seminar");
+            insertIntoDBcategory("0", "All");
+            insertIntoDBcategory("1", "Cultural");
+            insertIntoDBcategory("2", "Technical");
+            insertIntoDBcategory("3", "Sports");
+            insertIntoDBcategory("4", "Seminar");
 
             recordSet = db.rawQuery(query, null);
         }
@@ -197,6 +200,65 @@ public class Menu1 extends Fragment {
 
     }
 
+    private void getusertypes(){
+        //Creating a string request
+
+
+        StringRequest usertypeRequest = new StringRequest(Request.Method.GET, getResources().getString(R.string.usertype_url),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject jsonResponse = null;
+                        try {
+                            //Parsing the fetched Json String to JSON Object
+                            jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+
+                                JSONArray result = jsonResponse.getJSONArray("usertype");
+
+                                db.execSQL("DELETE FROM usertype");
+                                for(int i=0;i<result.length();i++) {
+
+                                    //Getting json object
+                                    JSONObject obj = result.getJSONObject(i);
+
+                                    insertIntoDBusertype(obj.getString("usertype_id"), obj.getString("name"));
+
+                                }
+
+
+                            }
+                            else{
+
+                            }
+
+
+
+
+                            //Calling method getStudents to get the students from the JSON Array
+                        } catch (JSONException e) {
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+                    }
+                });
+
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        //Adding request to the queue
+        requestQueue.add(usertypeRequest);
+
+    }
+
     class dynamicAdapter extends FragmentPagerAdapter{
 
         ArrayList<String> pass_category;
@@ -211,7 +273,7 @@ public class Menu1 extends Fragment {
         @Override
         public Fragment getItem(int position)
         {
-            Fragment fragment = new Primary();
+            Fragment fragment = new DisplayEventList();
             Bundle args = new Bundle();
             // Our object is just an integer :-P
             args.putInt("category_id", position);

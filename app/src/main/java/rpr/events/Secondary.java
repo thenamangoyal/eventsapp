@@ -5,7 +5,6 @@ package rpr.events;
  */
 
 import android.app.ProgressDialog;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,7 +37,7 @@ public class Secondary extends Fragment {
     public SQLiteDatabase db;
 
     private static Context context = null;
-    private static final String TAG = Menu3.class.getSimpleName();
+    private static final String TAG = UserProfile.class.getSimpleName();
     private static final String TAG_EVENT_ID = "event_id";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";

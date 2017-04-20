@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +48,23 @@ public class LoginActivity extends AppCompatActivity {
         bLogin = (Button) findViewById(R.id.bLogin);
         registerLink = (TextView) findViewById(R.id.tvRegister);
 
+        registerLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+
+                registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//            // Add new Flag to start new Activity
+                registerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                LoginActivity.this.startActivity(registerIntent);
+
+                finish();
+
+
+            }
+        });
+
         if (session.isUserLoggedIn()){
 
 
@@ -61,19 +80,49 @@ public class LoginActivity extends AppCompatActivity {
             finish();
       }
 
-        registerLink.setOnClickListener(new View.OnClickListener() {
+
+
+        etEmail.addTextChangedListener(new TextWatcher()  {
+
             @Override
-            public void onClick(View v) {
-                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
-                registerIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//            // Add new Flag to start new Activity
-                registerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                LoginActivity.this.startActivity(registerIntent);
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-                finish();
+            @Override
+            public void afterTextChanged(Editable s)  {
+                boolean iitrpr_email = etEmail.getText().toString().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in");
+                if (!iitrpr_email){
+                    etEmail.setError("Invalid Email");
+                }
+                else{
+                    etEmail.setError(null);
+                }
 
+            }
+        });
+
+        etPassword.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (etPassword.getText().toString().length() == 0){
+                    etPassword.setError("Please enter Password");
+                }
+                else{
+                    etPassword.setError(null);
+                }
 
             }
         });
@@ -99,13 +148,12 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response)
                                     {
-
                                         try{
                                             JSONObject jsonResponse = new JSONObject(response);
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
 
-                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("created"));
+                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"), jsonResponse.getString("created"));
 
                                                 Toast.makeText(getApplicationContext(), "Login Successful " + jsonResponse.getString("name"), Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(LoginActivity.this, NavBar.class);
@@ -130,6 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                                             }
                                         }catch (JSONException e) {
                                             e.printStackTrace();
+
                                         }
 
                                     }

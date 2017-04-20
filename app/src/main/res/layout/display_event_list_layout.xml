@@ -9,26 +9,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="rpr.events.Menu1">
+    tools:context="rpr.events.DisplayEventList">
 
-    <ListView
+
+<android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvWelcomMsg"
-        android:id="@+id/listView" />
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addNewFAB"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/ic_create_black_24dp"
-        app:elevation="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        app:borderWidth="0dp"
-        app:rippleColor="@color/colorAccent"/>
+        android:id="@+id/recycler_view" />
+
 
 
 </RelativeLayout>

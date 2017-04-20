@@ -35,6 +35,8 @@ public class UserSessionManager {
         public static final String KEY_EMAIL = "email";
 
         public static final String KEY_USER_ID = "user_id";
+
+        public static final String KEY_USERTYPE = "usertype";
         public static final String KEY_USERTYPE_ID = "usertype_id";
         public static final String KEY_CREATED = "created";
 
@@ -46,7 +48,7 @@ public class UserSessionManager {
         }
 
         //Create login session
-        public void createUserLoginSession(String name, String email, int user_id, int usertype_id, String created){
+        public void createUserLoginSession(String name, String email, int user_id, int usertype_id, String usertype, String created){
             // Storing login value as TRUE
             editor.putBoolean(IS_USER_LOGIN, true);
 
@@ -57,6 +59,7 @@ public class UserSessionManager {
             editor.putString(KEY_EMAIL, email);
             editor.putString(KEY_USER_ID, user_id+"");
             editor.putString(KEY_USERTYPE_ID, usertype_id+"");
+            editor.putString(KEY_USERTYPE, usertype);
             editor.putString(KEY_CREATED, created);
 
 
@@ -109,6 +112,7 @@ public class UserSessionManager {
             user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
 
             user.put(KEY_USERTYPE_ID, pref.getString(KEY_USERTYPE_ID, null));
+            user.put(KEY_USERTYPE, pref.getString(KEY_USERTYPE, null));
             user.put(KEY_CREATED, pref.getString(KEY_CREATED, null));
 
             // return user
