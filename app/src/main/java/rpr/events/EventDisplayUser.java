@@ -54,6 +54,8 @@ public class EventDisplayUser extends AppCompatActivity {
 
     UserSessionManager session;
     private static String usertype_id;
+    private static String user_id;
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -86,6 +88,7 @@ public class EventDisplayUser extends AppCompatActivity {
         HashMap<String, String> user = session.getUserDetails();
         usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
 
+        user_id = user.get(UserSessionManager.KEY_USER_ID);
 
         StringRequest eventRequest= new StringRequest(Request.Method.POST, getResources().getString(R.string.event_display_url),
                 new Response.Listener<String>()
@@ -234,7 +237,7 @@ public class EventDisplayUser extends AppCompatActivity {
             {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("event_id", event_id);
-                params.put("user_id", usertype_id);
+                params.put("user_id", user_id);
                 return params;
             }
 
@@ -282,7 +285,7 @@ public class EventDisplayUser extends AppCompatActivity {
             {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("event_id", event_id);
-                params.put("user_id", usertype_id);
+                params.put("user_id", user_id);
                 return params;
             }
 
