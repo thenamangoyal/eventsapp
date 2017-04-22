@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "911455515284",
+    "firebase_url": "https://iitrprevents-60ef1.firebaseio.com",
+    "project_id": "iitrprevents-60ef1",
+    "storage_bucket": "iitrprevents-60ef1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911455515284:android:592407641e21f8be",
+        "android_client_info": {
+          "package_name": "rpr.events"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911455515284-u5p5592f9b2ocq5ci2mo8pqdnlf91qee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMZraJ3HtaGaxcDFb8oHMfAiVMSfBdImQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
