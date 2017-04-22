@@ -139,7 +139,7 @@ public class NavBar extends AppCompatActivity
         //replacing the fragment
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.content_frame, fragment);
+            ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
 

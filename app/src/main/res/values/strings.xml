@@ -17,6 +17,7 @@
     <string name="getBookmark_url">http://10.1.1.19/~2015csb1021/event/getBookmark.php</string>
     <string name="toggleBookmark_url">http://10.1.1.19/~2015csb1021/event/toggleBookmark.php</string>
 
+    <string name="updateFCMtoken_url">http://10.1.1.19/~2015csb1021/event/updateFCMtoken.php</string>
 
     <string name="changePassword_url">http://10.1.1.19/~2015csb1021/event/changePassword.php</string>
 
@@ -24,6 +25,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
+    <string name="firebase_pref">rpr.events.firebase_pref</string>
+    <string name="firebase_token">rpr.events.firebase_token</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

@@ -1,6 +1,7 @@
 package rpr.events;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -149,20 +150,65 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onResponse(String response)
                                     {
                                         try{
-                                            JSONObject jsonResponse = new JSONObject(response);
+                                            final JSONObject jsonResponse = new JSONObject(response);
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
+                                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.firebase_pref),MODE_PRIVATE);
+                                                final int user_id = jsonResponse.getInt("user_id");
+                                                final String token = sharedPreferences.getString(getString(R.string.firebase_token),"");
+                                                StringRequest fcmRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.updateFCMtoken_url),
+                                                        new Response.Listener<String>() {
+                                                            @Override
+                                                            public void onResponse(String response) {
+
+                                                                //                        try{
+                                                                //                            JSONObject jsonResponse = new JSONObject(response);
+                                                                //                            boolean success = jsonResponse.getBoolean("success");
+                                                                //
+                                                                //                            if (success) {
+                                                                //
+                                                                //
+                                                                //
+                                                                //                            } else {
+                                                                //
+                                                                //
+                                                                //                            }
+                                                                //                        }catch (JSONException e) {
+                                                                //                            e.printStackTrace();
+                                                                //                        }
+
+                                                            }
+                                                        }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        // error
+
+                                                    }
+                                                }
+                                                ) {
+                                                    @Override
+                                                    protected Map<String, String> getParams() {
+                                                        Map<String, String> params = new HashMap<String, String>();
+                                                        params.put("user_id", user_id+"");
+                                                        params.put("token", token);
+
+
+                                                        return params;
+                                                    }
+
+                                                };
+                                                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                                                queue.add(fcmRequest);
+
+
+                                                UserSessionManager session = new UserSessionManager(getApplicationContext());
+
+
 
                                                 session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"), jsonResponse.getString("created"));
 
                                                 Toast.makeText(getApplicationContext(), "Login Successful " + jsonResponse.getString("name"), Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(LoginActivity.this, NavBar.class);
-//
-//                                                intent.putExtra("name", jsonResponse.getString("name"));
-//                                                intent.putExtra("user_id", jsonResponse.getInt("user_id"));
-//                                                intent.putExtra("usertype_id", jsonResponse.getInt("usertype_id"));
-//                                                intent.putExtra("email", jsonResponse.getString("email"));
-//                                                intent.putExtra("created", jsonResponse.getString("created"));
 
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
