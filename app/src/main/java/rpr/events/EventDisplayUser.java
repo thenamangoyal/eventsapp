@@ -85,6 +85,8 @@ public class EventDisplayUser extends AppCompatActivity {
         event_id = intent.getStringExtra("event_id");
 
         session = new UserSessionManager(getApplicationContext());
+        if(session.checkLogin())
+            finish();
         HashMap<String, String> user = session.getUserDetails();
         usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
 

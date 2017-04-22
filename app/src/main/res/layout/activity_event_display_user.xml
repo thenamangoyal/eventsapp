@@ -29,7 +29,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/header_cover_image"
                 android:background="@color/colorPrimary"
-                android:paddingBottom="16dp">
+                android:paddingBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
 
 
 
@@ -40,6 +42,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="Name"
                     android:textColor="#fff"
+                    android:textAlignment="center"
                     android:textSize="32dp" />
 
 

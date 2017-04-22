@@ -12,6 +12,7 @@ package rpr.events;
         import android.support.v4.app.Fragment;
         import android.support.v7.widget.GridLayoutManager;
         import android.support.v7.widget.RecyclerView;
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class DisplayEventList extends Fragment {
     boolean loading;
     boolean error_load;
     private int category_id;
+    RequestQueue queue;
 
     // URL to get events JSON
 
@@ -96,7 +98,7 @@ public class DisplayEventList extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        queue = Volley.newRequestQueue(context);
         eventList = new ArrayList<>();
         recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
         loadlimit = 0;
@@ -129,8 +131,6 @@ public class DisplayEventList extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        db.close();
     }
 
 
@@ -198,10 +198,15 @@ public class DisplayEventList extends Fragment {
             }
 
         };
-        RequestQueue queue = Volley.newRequestQueue(context);
+
         queue.add(eventRequest);
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void use_old_data(){

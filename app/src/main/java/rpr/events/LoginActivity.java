@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -131,7 +132,6 @@ public class LoginActivity extends AppCompatActivity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(etEmail.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
                 }
@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                                             final JSONObject jsonResponse = new JSONObject(response);
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
+                                                FirebaseMessaging.getInstance().subscribeToTopic("0");
                                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.firebase_pref),MODE_PRIVATE);
                                                 final int user_id = jsonResponse.getInt("user_id");
                                                 final String token = sharedPreferences.getString(getString(R.string.firebase_token),"");
