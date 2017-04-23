@@ -75,6 +75,7 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
+                android:id="@+id/ivContactItem1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -90,7 +91,9 @@
                 android:layout_toEndOf="@id/ivContactItem1"
                 android:text="Date"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="#212121"
+                android:layout_toRightOf="@id/ivContactItem1"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -102,7 +105,9 @@
                 android:layout_toEndOf="@id/ivContactItem1"
                 android:text="Time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="#212121"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@id/ivContactItem1" />
 
 
 
@@ -122,7 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_location_on_black" />
+                app:srcCompat="@drawable/ic_location_on_black"
+                android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
             <TextView
                 android:id="@+id/tvVenue"
@@ -132,7 +138,9 @@
                 android:layout_toEndOf="@id/ivContactItem2"
                 android:text="Venue"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="#212121"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@id/ivContactItem2" />
 
 
 
@@ -171,25 +179,27 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
-                android:id="@+id/ivContactItem5"
+                android:id="@+id/chkState5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_person_black_24dp" />
+                app:srcCompat="@drawable/ic_person_black_24dp"
+                android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
             <TextView
                 android:id="@+id/tvOrganiser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/ivContactItem5"
-                android:layout_toStartOf="@+id/chkState5"
+                android:layout_toEndOf="@id/chkState5"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Organiser"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#212121" />
+                android:textColor="#212121"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@id/chkState5" />
 
         </RelativeLayout>
 
