@@ -83,6 +83,7 @@ public class EventDisplayUser extends AppCompatActivity {
         bookmark = (Button) findViewById(R.id.tvBookmark);
 
         event_id = intent.getStringExtra("event_id");
+        Log.e("debug",event_id);
 
         session = new UserSessionManager(getApplicationContext());
         if(session.checkLogin())
