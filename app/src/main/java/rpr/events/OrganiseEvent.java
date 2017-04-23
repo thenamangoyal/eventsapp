@@ -215,7 +215,7 @@ public class OrganiseEvent extends Fragment {
                 final int usertype = usertypeSpinner.getSelectedItemPosition();
                 final String details = etDetails.getText().toString().trim();
                 final String time = selectedDate[0] + " " + selectedTime[0];
-                Log.e("d",time);
+//                Log.e("d",time);
                 HashMap<String, String> user = session.getUserDetails();
 
                 // get name
