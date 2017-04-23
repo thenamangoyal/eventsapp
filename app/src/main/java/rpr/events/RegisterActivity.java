@@ -144,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (etName.getText().toString().trim().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify Name", Toast.LENGTH_SHORT).show();
                 }
-                else if(etEmail.getText().toString().trim().equals("") || !etEmail.toString().trim().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in")){
+                else if(etEmail.getText().toString().trim().equals("") || !(etEmail.getText().toString().trim().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in"))){
                     Toast.makeText(getApplicationContext(), "Please specify valid Email", Toast.LENGTH_SHORT).show();
                 }
                 else if(etPassword.getText().toString().length() < 8){
