@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_list_events"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/ic_list_black_24dp"
             android:title="List Events" />
         <item
             android:id="@+id/nav_organise_event"
@@ -22,7 +22,7 @@
             <group android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_profile_manage"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_person_black_24dp"
                 android:title="Manage Profile" />
             <item
                 android:id="@+id/nav_logout"
