@@ -121,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_date_range_black_24dp"
+                app:srcCompat="@drawable/ic_location_on_black"
                 android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
             <TextView
