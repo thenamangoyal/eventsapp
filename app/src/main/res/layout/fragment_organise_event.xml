@@ -58,7 +58,9 @@
                         android:id="@+id/in_date"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:text="Date"/>
+                        android:text="Date"
+                        android:textColor="#212121"
+                        android:textSize="16dp"/>
 
 
                 <Button
@@ -80,6 +82,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Time"
+                        android:textColor="#212121"
+                        android:textSize="16dp"
                         />
 
                 <Button

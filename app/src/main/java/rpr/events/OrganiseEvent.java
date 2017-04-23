@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.util.Log.e;
 
 
 public class OrganiseEvent extends Fragment {
@@ -88,7 +91,8 @@ public class OrganiseEvent extends Fragment {
         final Calendar c = Calendar.getInstance();
 
         txtDate.setText(DateFormat.getDateInstance().format(new Date()));
-        txtTime.setText(DateFormat.getTimeInstance().format(new Date()));
+
+        txtTime.setText(new SimpleDateFormat("hh:mm aa").format(new Date()));
 
         final String[] selectedDate = new String[1];
         SimpleDateFormat formatterdefault = new SimpleDateFormat("dd/MM/yyyy");
@@ -173,11 +177,13 @@ public class OrganiseEvent extends Fragment {
                                     cal.set(Calendar.MINUTE, minute);
                                     cal.set(Calendar.SECOND, 0);
                                     Date selected = cal.getTime();
-                                    txtTime.setText(DateFormat.getTimeInstance().format(selected));
 
                                     String dtStart = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
-                                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                                    txtTime.setText(new SimpleDateFormat("hh:mm aa").format(selected));
 
+
+
+                                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
                                     java.sql.Time timeValue = new java.sql.Time(format.parse(dtStart).getTime());
                                     selectedTime[0] = String.valueOf(timeValue);
 
@@ -209,6 +215,7 @@ public class OrganiseEvent extends Fragment {
                 final int usertype = usertypeSpinner.getSelectedItemPosition();
                 final String details = etDetails.getText().toString().trim();
                 final String time = selectedDate[0] + " " + selectedTime[0];
+                Log.e("d",time);
                 HashMap<String, String> user = session.getUserDetails();
 
                 // get name
