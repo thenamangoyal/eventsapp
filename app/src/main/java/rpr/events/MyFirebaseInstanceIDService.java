@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,6 +69,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         UserSessionManager session = new UserSessionManager(getApplicationContext());
         if (session.isUserLoggedIn()) {
+            FirebaseMessaging.getInstance().subscribeToTopic("0");
             HashMap<String, String> user = session.getUserDetails();
             final String user_id = user.get(UserSessionManager.KEY_USER_ID);
             StringRequest fcmRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.updateFCMtoken_url),

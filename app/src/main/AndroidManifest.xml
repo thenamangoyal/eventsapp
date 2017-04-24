@@ -12,7 +12,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_2"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -79,6 +79,10 @@
             android:name=".EditOrganisedEvent"
             android:label="Edit Organised Event"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ManageSubscription"
+            android:label="@string/title_activity_manage_subscription"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
