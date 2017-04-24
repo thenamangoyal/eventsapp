@@ -1,6 +1,7 @@
 <resources>
     <string name="listAll_url">http://10.1.1.19/~2015csb1021/event/listAll.php"</string>
     <string name="listPast_url">http://10.1.1.19/~2015csb1021/event/listPast.php"</string>
+    <string name="listOrganised_url">http://10.1.1.19/~2015csb1021/event/listOrganised.php"</string>
     <string name="listBookmark_url">http://10.1.1.19/~2015csb1021/event/listBookmark.php"</string>
     <string name="event_display_url">http://10.1.1.19/~2015csb1021/event/getEvent.php</string>
     <string name="category_url">http://10.1.1.19/~2015csb1021/event/category.php</string>
@@ -231,4 +232,5 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_past_event">PastEvent</string>
+    <string name="title_activity_edit_organised_event">EditOrganisedEvent</string>
 </resources>

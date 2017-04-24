@@ -22,10 +22,17 @@ import java.util.List;
 public class eventAdapter extends RecyclerView.Adapter<eventAdapter.ViewHolder>  {
     private Context context;
     private List<eventItem> event_data;
+    private boolean organise;
 
     public eventAdapter(Context context, List<eventItem> event_data) {
         this.context = context;
         this.event_data = event_data;
+        this.organise = organise;
+    }
+
+    public eventAdapter(Context context, List<eventItem> event_data, boolean organise) {
+        this(context,event_data);
+        this.organise = organise;
     }
 
     @Override
@@ -52,6 +59,9 @@ public class eventAdapter extends RecyclerView.Adapter<eventAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EventDisplayUser.class);
+                if (organise == true){
+                    intent = new Intent(context, EditOrganisedEvent.class);
+                }
                 intent.putExtra("event_id", event_data.get(position).getEvent_id());
                 intent.putExtra("name", event_data.get(position).getName());
                 intent.putExtra("time", event_data.get(position).getTime());

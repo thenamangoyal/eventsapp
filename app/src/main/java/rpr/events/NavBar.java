@@ -122,11 +122,14 @@ public class NavBar extends AppCompatActivity
             case R.id.nav_list_events:
                 fragment = new ListEventsTabs();
                 break;
-            case R.id.nav_organise_event:
-                fragment = new OrganiseEvent();
-                break;
             case R.id.nav_bookmarks:
                 fragment = new BookmarksList();
+                break;
+            case R.id.nav_organise_event:
+            fragment = new OrganiseEvent();
+            break;
+            case R.id.nav_manage_organise_event:
+                fragment = new OrganisedList();
                 break;
 
             case R.id.nav_profile_manage:

@@ -273,7 +273,7 @@ public class OrganiseEvent extends Fragment {
                         protected Map<String, String> getParams()
                         {
                             Map<String, String>  params = new HashMap<String, String>();
-                            params.put("event_name", event_name);
+                            params.put("name", event_name);
                             params.put("user_id",user_id);
                             params.put("category_id", category+"");
                             params.put("usertype_id", usertype+"");

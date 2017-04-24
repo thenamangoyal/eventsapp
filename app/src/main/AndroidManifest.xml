@@ -73,6 +73,12 @@
         <activity
             android:name=".PastEvent"
             android:label="Past Events"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditOrganisedEvent"
+            android:label="Edit Organised Event"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
