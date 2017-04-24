@@ -343,7 +343,7 @@ public class EditOrganisedEvent extends AppCompatActivity {
 
                                         } else {
 
-                                            Toast.makeText(context, "Event updating Failed", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Event update Failed", Toast.LENGTH_SHORT).show();
 
                                         }
                                     }catch (JSONException e) {
@@ -382,6 +382,69 @@ public class EditOrganisedEvent extends AppCompatActivity {
             }
         });
 
+        final Button bDelete = (Button) findViewById(R.id.bDelete);
+
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+
+                    StringRequest registerRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.deleteEvent_url),
+                            new Response.Listener<String>()
+                            {
+                                @Override
+                                public void onResponse(String response)
+                                {
+
+                                    try{
+                                        JSONObject jsonResponse = new JSONObject(response);
+                                        boolean success = jsonResponse.getBoolean("success");
+
+                                        if (success) {
+
+
+                                            Toast.makeText(context, "Event " + name + " was deleted ", Toast.LENGTH_SHORT).show();
+
+                                            onBackPressed();
+
+
+                                        } else {
+
+                                            Toast.makeText(context, "Event deletion Failed", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // error
+                        }
+                    }
+                    ) {
+                        @Override
+                        protected Map<String, String> getParams()
+                        {
+                            Map<String, String>  params = new HashMap<String, String>();
+                            params.put("user_id",user_id);
+                            params.put("event_id",event_id+"");
+
+
+                            return params;
+                        }
+
+                    };
+                    queue.add(registerRequest);
+
+            }
+        });
     }
 
     @Override

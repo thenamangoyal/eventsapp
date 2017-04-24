@@ -22,7 +22,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FirebaseMsgService";
 
     UserSessionManager session;
-    private int notification_id = 0;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // [START_EXCLUDE]
@@ -35,7 +34,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
 
         // Check if message contains a data payload.
@@ -78,8 +76,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 NotificationManager notificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                notificationManager.notify(notification_id++, notificationBuilder.build());
-                Log.e("a", notification_id+"");
+                notificationManager.notify(Integer.parseInt(remoteMessage.getData().get("event_id")), notificationBuilder.build());
 
 
             }

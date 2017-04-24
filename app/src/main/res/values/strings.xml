@@ -9,6 +9,7 @@
 
     <string name="addEvent_url">http://10.1.1.19/~2015csb1021/event/addEvent.php</string>
     <string name="updateEvent_url">http://10.1.1.19/~2015csb1021/event/updateEvent.php</string>
+    <string name="deleteEvent_url">http://10.1.1.19/~2015csb1021/event/deleteEvent.php</string>
     <string name="usertype_url">http://10.1.1.19/~2015csb1021/event/usertype.php</string>
     <string name="categoryRegister_url">http://10.1.1.19/~2015csb1021/event/categoryRegister.php</string>
 

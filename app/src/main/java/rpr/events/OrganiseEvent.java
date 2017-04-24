@@ -7,6 +7,7 @@ package rpr.events;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -250,9 +251,7 @@ public class OrganiseEvent extends Fragment {
 
                                             Toast.makeText(context, "Event " + event_name + " was added Successfully ", Toast.LENGTH_SHORT).show();
 
-                                            FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
-                                            fragmentTransaction2.replace(R.id.content_frame, new ListEventsTabs());
-                                            fragmentTransaction2.commit();
+                                            startActivity(new Intent(getActivity(), NavBar.class));
 
                                         } else {
 
