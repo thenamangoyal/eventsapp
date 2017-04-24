@@ -1,5 +1,6 @@
 package rpr.events;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -95,6 +96,7 @@ public class NavBar extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, PastEvent.class));
             return true;
         }
 

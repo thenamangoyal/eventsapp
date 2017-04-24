@@ -14,13 +14,12 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvWelcomMsg"
         android:id="@+id/listView" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNewFAB"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/ic_create_black_24dp"
+        app:srcCompat="@drawable/ic_create_black_24dp"
         app:elevation="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

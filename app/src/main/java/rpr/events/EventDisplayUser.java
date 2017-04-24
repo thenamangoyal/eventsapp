@@ -9,7 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -62,6 +64,7 @@ public class EventDisplayUser extends AppCompatActivity {
     TextView venuetv;
     TextView organisertv;
     TextView detailstv;
+    TextView categorytv;
     Button bookmark;
     Button addcal;
 
@@ -86,6 +89,20 @@ public class EventDisplayUser extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        final LinearLayout layout = (LinearLayout)findViewById(R.id.buttonPanel);
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) findViewById(R.id.datapanel).getLayoutParams();
+                mlp.setMargins(0,0,0,layout.getHeight());
+                layout.getViewTreeObserver().removeGlobalOnLayoutListener(
+                        this);
+            }
+        });
+
+
         session = new UserSessionManager(getApplicationContext());
         if(session.checkLogin())
             finish();
@@ -98,6 +115,7 @@ public class EventDisplayUser extends AppCompatActivity {
         venuetv = (TextView) findViewById(R.id.tvVenue);
         organisertv = (TextView) findViewById(R.id.tvOrganiser);
         detailstv = (TextView) findViewById(R.id.tvdetails);
+        categorytv = (TextView) findViewById(R.id.tvCategory);
         bookmark = (Button) findViewById(R.id.tvBookmark);
         addcal = (Button) findViewById(R.id.tvAddCalender);
 
@@ -125,6 +143,7 @@ public class EventDisplayUser extends AppCompatActivity {
         timetv.setText(new SimpleDateFormat("hh:mm aa").format(date));
         organisertv.setText("Organised By: " + creator);
         venuetv.setText(venue);
+        categorytv.setText(category);
         final Date finalDate = date;
         addcal.setOnClickListener(new View.OnClickListener() {
             @Override
