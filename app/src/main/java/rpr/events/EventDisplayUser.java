@@ -70,6 +70,7 @@ public class EventDisplayUser extends AppCompatActivity {
 
     UserSessionManager session;
     private static String user_id;
+    RequestQueue queue;
 
 
     @Override

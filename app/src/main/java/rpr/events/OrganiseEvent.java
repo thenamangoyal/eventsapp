@@ -60,6 +60,7 @@ public class OrganiseEvent extends Fragment {
     Button btntimepicker, btndatepicker;
 
     UserSessionManager session;
+    RequestQueue queue;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
@@ -82,6 +83,8 @@ public class OrganiseEvent extends Fragment {
         usertypeSpinner = (Spinner) getView().findViewById(R.id.usertype_spinner);
         txtDate = (TextView) getView().findViewById(R.id.in_date);
         txtTime = (TextView) getView().findViewById(R.id.in_time);
+        queue = Volley.newRequestQueue(context);
+
 
         btndatepicker = (Button) getView().findViewById(R.id.btn_date);
         btntimepicker = (Button) getView().findViewById(R.id.btn_time);
@@ -286,7 +289,6 @@ public class OrganiseEvent extends Fragment {
                         }
 
                     };
-                    RequestQueue queue = Volley.newRequestQueue(context);
                     queue.add(registerRequest);
                 }
             }
@@ -294,6 +296,21 @@ public class OrganiseEvent extends Fragment {
 
 
     }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (queue != null){
+            queue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+        }
+    }
+
     private void getusertype(){
         //Creating a string request
 
@@ -333,10 +350,9 @@ public class OrganiseEvent extends Fragment {
                 });
 
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
-        requestQueue.add(usertypeRequest);
+        queue.add(usertypeRequest);
 
     }
     private void getcategory(){
@@ -378,10 +394,10 @@ public class OrganiseEvent extends Fragment {
                 });
 
         //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
 
         //Adding request to the queue
-        requestQueue.add(categoryRequest);
+        queue.add(categoryRequest);
 
     }
 }
