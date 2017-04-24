@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,17 @@ public class eventAdapter extends RecyclerView.Adapter<eventAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EventDisplayUser.class);
-                intent.putExtra("event_id", event_data.get(position).getEvent_id() + "");
+                intent.putExtra("event_id", event_data.get(position).getEvent_id());
+                intent.putExtra("name", event_data.get(position).getName());
+                intent.putExtra("time", event_data.get(position).getTime());
+                intent.putExtra("venue", event_data.get(position).getVenue());
+                intent.putExtra("details", event_data.get(position).getDetails());
+                intent.putExtra("usertype_id", event_data.get(position).getUsertype_id());
+                intent.putExtra("usertype", event_data.get(position).getUsertype());
+                intent.putExtra("creator_id", event_data.get(position).getCreator_id());
+                intent.putExtra("creator", event_data.get(position).getCreator());
+                intent.putExtra("category_id", event_data.get(position).getCategory_id());
+                intent.putExtra("category", event_data.get(position).getCategory());
                 context.startActivity(intent);
             }
         });

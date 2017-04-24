@@ -44,16 +44,28 @@ import java.util.Map;
 
 public class EventDisplayUser extends AppCompatActivity {
 
-    String event_id;
-    String name;
-    String time;
-    String venue;
-    String details;
-    int category_id;
+    private int event_id;
+    private String name;
+    private String time;
+    private String venue;
+    private String details;
+    private int usertype_id;
+    private String usertype;
+    private int creator_id;
+    private String creator;
+    private int category_id;
+    private String category;
+
+    TextView nametv;
+    TextView datetv;
+    TextView timetv;
+    TextView venuetv;
+    TextView organisertv;
+    TextView detailstv;
     Button bookmark;
+    Button addcal;
 
     UserSessionManager session;
-    private static String usertype_id;
     private static String user_id;
 
 
@@ -73,129 +85,78 @@ public class EventDisplayUser extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Intent intent = getIntent();
-        final TextView nametv = (TextView) findViewById(R.id.tvname);
-        final TextView datetv = (TextView) findViewById(R.id.tvDate);
-        final TextView timetv = (TextView) findViewById(R.id.tvTime);
-        final TextView venuetv = (TextView) findViewById(R.id.tvVenue);
-        final TextView organisertv = (TextView) findViewById(R.id.tvOrganiser);
-        final TextView detailstv = (TextView) findViewById(R.id.tvdetails);
-        bookmark = (Button) findViewById(R.id.tvBookmark);
-
-        event_id = intent.getStringExtra("event_id");
-//        Log.e("debug",event_id);
 
         session = new UserSessionManager(getApplicationContext());
         if(session.checkLogin())
             finish();
         HashMap<String, String> user = session.getUserDetails();
-        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
-
         user_id = user.get(UserSessionManager.KEY_USER_ID);
 
-        StringRequest eventRequest= new StringRequest(Request.Method.POST, getResources().getString(R.string.event_display_url),
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
+        nametv = (TextView) findViewById(R.id.tvname);
+        datetv = (TextView) findViewById(R.id.tvDate);
+        timetv = (TextView) findViewById(R.id.tvTime);
+        venuetv = (TextView) findViewById(R.id.tvVenue);
+        organisertv = (TextView) findViewById(R.id.tvOrganiser);
+        detailstv = (TextView) findViewById(R.id.tvdetails);
+        bookmark = (Button) findViewById(R.id.tvBookmark);
+        addcal = (Button) findViewById(R.id.tvAddCalender);
 
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                JSONArray result = jsonResponse.getJSONArray("events");
-                                JSONObject obj = result.getJSONObject(0);
-                                name = obj.getString("name");
-                                venue = obj.getString("venue");
-                                details = obj.getString("details");
-                                time = obj.getString("time");
-                                category_id = obj.getInt("category_id");
-                                Date date = new Date();
-                                try {
-                                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                                nametv.setText(name);
-                                detailstv.setText(details);
-                                datetv.setText(new SimpleDateFormat("dd MMM, yyyy").format(date));
-                                timetv.setText(new SimpleDateFormat("hh:mm aa").format(date));
-                                organisertv.setText("Organised By: " + obj.getString("creator"));
-                                venuetv.setText(venue);
-                                Button addcal = (Button) findViewById(R.id.tvAddCalender);
-                                final Date finalDate = date;
-                                addcal.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(Intent.ACTION_INSERT);
-                                        intent.setType("vnd.android.cursor.item/event");
-
-                                        Calendar beginCal = Calendar.getInstance();
-
-
-                                        //long endTime = cal.getTimeInMillis()  + 60 * 60 * 1000;
-
-                                        // intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,endTime);
-                                        // intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-
-                                        intent.putExtra(CalendarContract.Events.TITLE, name);
-                                        intent.putExtra(CalendarContract.Events.DESCRIPTION,  details);
-                                        intent.putExtra(CalendarContract.Events.EVENT_LOCATION, venue);
-
-                                        long startMillis = 0;
-                                        Calendar beginTime = Calendar.getInstance();
-                                        beginTime.setTime(finalDate);
-
-                                        startMillis = beginTime.getTimeInMillis();
-                                        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis);
-
-                                        // intent.putExtra(Events.RRULE, "FREQ=YEARLY");
-
-                                        startActivity(intent);
-                                    }
-                                });
-
-
-                                checkbookmark();
-                                bookmark.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        toggleBookmark();
-
-                                    }
-                                });
-
-
-                            } else {
-
-                            }
-                        }catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // error
-            }
+        Intent intent = getIntent();
+        event_id = intent.getIntExtra("event_id",0);
+        name =  intent.getStringExtra("name");
+        time =  intent.getStringExtra("time");
+        venue =  intent.getStringExtra("venue");
+        details =  intent.getStringExtra("details");
+        usertype_id =  intent.getIntExtra("usertype_id",0);
+        usertype =  intent.getStringExtra("usertype");
+        creator_id =  intent.getIntExtra("creator_id",0);
+        creator =  intent.getStringExtra("creator");
+        category_id =  intent.getIntExtra("category_id",0);
+        category =  intent.getStringExtra("category");
+        Date date = new Date();
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        ) {
+        nametv.setText(name);
+        detailstv.setText(details);
+        datetv.setText(new SimpleDateFormat("dd MMM, yyyy").format(date));
+        timetv.setText(new SimpleDateFormat("hh:mm aa").format(date));
+        organisertv.setText("Organised By: " + creator);
+        venuetv.setText(venue);
+        final Date finalDate = date;
+        addcal.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("event_id", event_id);
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_INSERT);
+                intent.setType("vnd.android.cursor.item/event");
 
-                return params;
+                // intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,endTime);
+                // intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+                // intent.putExtra(Events.RRULE, "FREQ=YEARLY");
+                intent.putExtra(CalendarContract.Events.TITLE, name);
+                intent.putExtra(CalendarContract.Events.DESCRIPTION,  details);
+                intent.putExtra(CalendarContract.Events.EVENT_LOCATION, venue);
+
+                Calendar beginTime = Calendar.getInstance();
+                beginTime.setTime(finalDate);
+                long startMillis = beginTime.getTimeInMillis();
+                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis);
+
+                startActivity(intent);
             }
+        });
 
-        };
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(eventRequest);
+
+        checkbookmark();
+        bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleBookmark();
+
+            }
+        });
 
 
 
@@ -239,7 +200,7 @@ public class EventDisplayUser extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("event_id", event_id);
+                params.put("event_id", event_id+"");
                 params.put("user_id", user_id);
                 return params;
             }
@@ -287,7 +248,7 @@ public class EventDisplayUser extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("event_id", event_id);
+                params.put("event_id", event_id+"");
                 params.put("user_id", user_id);
                 return params;
             }

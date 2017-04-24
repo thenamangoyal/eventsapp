@@ -22,6 +22,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FirebaseMsgService";
 
     UserSessionManager session;
+    private int notification_id = 0;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // [START_EXCLUDE]
@@ -43,10 +44,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if(session.isUserLoggedIn()){
             if (remoteMessage.getData().size() > 0) {
                 Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-                Intent intent = new Intent(this, EventDisplayUser.class);
-
-                intent.putExtra("event_id", remoteMessage.getData().get("event_id"));
+                Intent intent = new Intent(this, NavBar.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if (remoteMessage.getData().get("event_id") != null && remoteMessage.getData().get("name") != null && remoteMessage.getData().get("time") != null && remoteMessage.getData().get("venue") != null && remoteMessage.getData().get("details") != null && remoteMessage.getData().get("usertype_id") != null && remoteMessage.getData().get("usertype") != null && remoteMessage.getData().get("creator_id") != null && remoteMessage.getData().get("creator") != null && remoteMessage.getData().get("category_id") != null && remoteMessage.getData().get("category") != null){
+                    intent = new Intent(this, EventDisplayUser.class);
+
+                    intent.putExtra("event_id", Integer.parseInt(remoteMessage.getData().get("event_id")));
+                    intent.putExtra("name", remoteMessage.getData().get("name"));
+                    intent.putExtra("time", remoteMessage.getData().get("time"));
+                    intent.putExtra("venue", remoteMessage.getData().get("venue"));
+                    intent.putExtra("details", remoteMessage.getData().get("details"));
+                    intent.putExtra("usertype_id", Integer.parseInt(remoteMessage.getData().get("usertype_id")));
+                    intent.putExtra("usertype", remoteMessage.getData().get("usertype"));
+                    intent.putExtra("creator_id", Integer.parseInt(remoteMessage.getData().get("creator_id")));
+                    intent.putExtra("creator", remoteMessage.getData().get("creator"));
+                    intent.putExtra("category_id", Integer.parseInt(remoteMessage.getData().get("category_id")));
+                    intent.putExtra("category", remoteMessage.getData().get("category"));
+
+                }
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                         PendingIntent.FLAG_ONE_SHOT);
 
@@ -63,7 +78,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 NotificationManager notificationManager =
                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+                notificationManager.notify(notification_id++, notificationBuilder.build());
 
 
 

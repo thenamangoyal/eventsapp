@@ -39,6 +39,8 @@ public class ListEventsTabs extends Fragment {
     private Context context = null;
 
     public SQLiteDatabase db;
+
+    RequestQueue queue;
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
 
@@ -56,7 +58,7 @@ public class ListEventsTabs extends Fragment {
 
 
         context = getActivity();
-
+        queue = Volley.newRequestQueue(context);
         createDatabase();
         getcategory();
 
@@ -68,6 +70,16 @@ public class ListEventsTabs extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (queue != null){
+
+            queue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+        }
+
         db.close();
     }
 
@@ -153,11 +165,9 @@ public class ListEventsTabs extends Fragment {
                     }
                 });
 
-        //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         //Adding request to the queue
-        requestQueue.add(usertypeRequest);
+        queue.add(usertypeRequest);
 
     }
 
@@ -251,11 +261,8 @@ public class ListEventsTabs extends Fragment {
                     }
                 });
 
-        //Creating a request queue
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-
         //Adding request to the queue
-        requestQueue.add(usertypeRequest);
+        queue.add(usertypeRequest);
 
     }
 

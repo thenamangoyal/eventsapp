@@ -246,8 +246,8 @@ public class OrganiseEvent extends Fragment {
 
 
                                             Toast.makeText(context, "Event " + event_name + " was added Successfully ", Toast.LENGTH_SHORT).show();
-                                            FragmentManager fragmentManager2 = getFragmentManager();
-                                            FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
+
+                                            FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
                                             fragmentTransaction2.replace(R.id.content_frame, new ListEventsTabs());
                                             fragmentTransaction2.commit();
 

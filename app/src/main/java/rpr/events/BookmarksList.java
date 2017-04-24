@@ -1,12 +1,8 @@
 package rpr.events;
 
-/**
- * Created by Vishal Singh on 02-04-2017.
- */
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,10 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.database.Cursor;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 public class BookmarksList extends Fragment {
 
 
@@ -48,7 +46,7 @@ public class BookmarksList extends Fragment {
     private static final String TAG_TIME = "time";
     private static final String TAG_VENUE = "venue";
     private static final String TAG_DETAILS = "details";
-    private static String usertype_id;
+    private static String user_id;
 
     private static ProgressDialog pDialog;
     private RecyclerView recyclerView;
@@ -59,7 +57,7 @@ public class BookmarksList extends Fragment {
     private int loadlimit;
     boolean loading;
     boolean error_load;
-    String user_id;
+    RequestQueue queue;
 
     // URL to get events JSON
 
@@ -67,12 +65,13 @@ public class BookmarksList extends Fragment {
 
     protected void createDatabase(){
         db=getActivity().openOrCreateDatabase("EventDB", Context.MODE_PRIVATE, null);
-        db.execSQL("CREATE TABLE IF NOT EXISTS Bookmarks (event_id INTEGER NOT NULL, category_id INTEGER NOT NULL, user_id INTEGER NOT NULL, usertype_id INTEGER NOT NULL, name VARCHAR NOT NULL, details VARCHAR NOT NULL, time TIMESTAMP NOT NULL,venue VARCHAR NOT NULL  );");
+//        Log.e("Event", "open DB" + category_id);
+        db.execSQL("CREATE TABLE IF NOT EXISTS Bookmarks (event_id INTEGER NOT NULL, name VARCHAR NOT NULL, time VARCHAR NOT NULL, venue VARCHAR NOT NULL, details VARCHAR NOT NULL, usertype_id INTEGER NOT NULL, usertype VARCHAR NOT NULL, creator_id INTEGER NOT NULL, creator VARCHAR NOT NULL, category_id INTEGER NOT NULL, category VARCHAR NOT NULL);");
     }
 
-    protected void insertIntoDB(String Event_id, String Category_id, String User_id, String Usertype_id, String Name, String Details, String Time, String Venue){
+    protected void insertIntoDB(eventItem e){
 
-        String query = "INSERT INTO Bookmarks (event_id,category_id,user_id,usertype_id,name, details, time, venue) VALUES('"+Event_id+"','"+Category_id+"','"+User_id+"','"+Usertype_id+"', '"+Name+"', '"+Details+"', '"+Time+"', '"+Venue+"');";
+        String query = "INSERT INTO Bookmarks (event_id,name,time,venue,details,usertype_id,usertype,creator_id,creator,category_id,category) VALUES('"+e.getEvent_id()+"','"+e.getName()+"','"+e.getTime()+"','"+e.getVenue()+"', '"+e.getDetails()+"', '"+e.getUsertype_id()+"', '"+e.getUsertype()+"', '"+e.getCreator_id()+"', '"+e.getCreator()+"', '"+e.getCategory_id()+"', '"+e.getCategory()+"');";
 
         db.execSQL(query);
     }
@@ -82,15 +81,12 @@ public class BookmarksList extends Fragment {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         context = getActivity();
-
+        queue = Volley.newRequestQueue(context);
         session = new UserSessionManager(getContext());
         HashMap<String, String> user = session.getUserDetails();
         user_id = user.get(UserSessionManager.KEY_USER_ID);
-
-        createDatabase();
-
-
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Bookmarks");
+        createDatabase();
         return inflater.inflate(R.layout.display_bookmark_list_layout, container, false);
 
     }
@@ -100,20 +96,29 @@ public class BookmarksList extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventList = new ArrayList<>();
         recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
-        loadlimit = 0;
-        loading = false;
-        error_load = false;
-        load_data_from_server(loadlimit++);
-
         gridLayoutManager = new GridLayoutManager(context,1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
+        eventList = new ArrayList<>();
         adapter = new eventAdapter(context,eventList);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(getActivity(), null));
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        eventList.clear();
+        adapter.notifyDataSetChanged();
+
+        loadlimit = 0;
+        loading = false;
+        error_load = false;
+        load_data_from_server(loadlimit++);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -127,15 +132,27 @@ public class BookmarksList extends Fragment {
             }
         });
 
+
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
+    public void onDestroy() {
+        super.onDestroy();
         db.close();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (queue != null){
+            queue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+        }
+    }
 
     private void load_data_from_server(final int id) {
         final ProgressDialog dialog = new ProgressDialog(context);
@@ -150,19 +167,16 @@ public class BookmarksList extends Fragment {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
+
                             if (success) {
                                 JSONArray array = jsonResponse.getJSONArray("events");
                                 db.execSQL("DELETE FROM Bookmarks");
                                 for (int i=0; i<array.length(); i++){
 
-                                    JSONObject c = array.getJSONObject(i);
-
-                                    eventItem data = new eventItem(c.getInt("event_id"),c.getInt("category_id"),c.getInt("user_id"),c.getInt("usertype_id"),c.getString("name"),
-                                            c.getString("details"),c.getString("time"),c.getString("venue"));
-
-                                    insertIntoDB(c.getString("event_id"),c.getString("category_id"),c.getString("user_id"),c.getString("usertype_id"),c.getString("name"), c.getString("details"),c.getString("time"),c.getString("venue"));
-
+                                    JSONObject e = array.getJSONObject(i);
+                                    eventItem data = new eventItem(e.getInt("event_id"),e.getString("name"),e.getString("time"),e.getString("venue"),e.getString("details"),e.getInt("usertype_id"),e.getString("usertype"),e.getInt("creator_id"),e.getString("creator"),e.getInt("category_id"),e.getString("category"));
                                     eventList.add(data);
+                                    insertIntoDB(data);
 
                                 }
 
@@ -200,10 +214,15 @@ public class BookmarksList extends Fragment {
             }
 
         };
-        RequestQueue queue = Volley.newRequestQueue(context);
+
         queue.add(eventRequest);
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void use_old_data(){
@@ -217,14 +236,9 @@ public class BookmarksList extends Fragment {
         //Position after the last row means the end of the results
         while (!recordSet.isAfterLast()) {
 
-            eventItem data = new eventItem(recordSet.getInt(recordSet.getColumnIndex("event_id")),recordSet.getInt(recordSet.getColumnIndex("category_id")),recordSet.getInt(recordSet.getColumnIndex("user_id")),recordSet.getInt(recordSet.getColumnIndex("usertype_id")),recordSet.getString(recordSet.getColumnIndex("name")),
-                    recordSet.getString(recordSet.getColumnIndex("details")),recordSet.getString(recordSet.getColumnIndex("time")),recordSet.getString(recordSet.getColumnIndex("venue")));
-
-
+            eventItem data = new eventItem(recordSet.getInt(recordSet.getColumnIndex("event_id")),recordSet.getString(recordSet.getColumnIndex("name")),recordSet.getString(recordSet.getColumnIndex("time")),recordSet.getString(recordSet.getColumnIndex("venue")),recordSet.getString(recordSet.getColumnIndex("details")),recordSet.getInt(recordSet.getColumnIndex("usertype_id")),recordSet.getString(recordSet.getColumnIndex("usertype")),recordSet.getInt(recordSet.getColumnIndex("creator_id")),recordSet.getString(recordSet.getColumnIndex("creator")),recordSet.getInt(recordSet.getColumnIndex("category_id")),recordSet.getString(recordSet.getColumnIndex("category")));
             // adding event to event list
             eventList.add(data);
-
-
             recordSet.moveToNext();
 
         }
