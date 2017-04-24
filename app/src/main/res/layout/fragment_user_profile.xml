@@ -65,6 +65,18 @@
                 android:textColor="#212121"
                 android:text="Usertype" />
 
+            <!--<TextView-->
+                <!--android:id="@+id/subscriptions"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:background="#fff"-->
+                <!--android:clickable="true"-->
+                <!--android:padding="20dp"-->
+
+                <!--android:textColor="#212121"-->
+                <!--android:text="Subscriptions" />-->
+
             <Button
 
                 android:id="@+id/bchangepass"

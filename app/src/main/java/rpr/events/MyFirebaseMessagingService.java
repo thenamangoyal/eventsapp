@@ -85,26 +85,41 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         // Check if message contains a notification payload.
-//        if (remoteMessage.getNotification() != null) {
-//            Intent intent = new Intent(this, NavBar.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-//                    PendingIntent.FLAG_ONE_SHOT);
-//
-//            Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-//                    .setSmallIcon(R.drawable.ic_all_inclusive_black_24dp)
-//                    .setContentTitle(remoteMessage.getNotification().getTitle())
-//                    .setContentText(remoteMessage.getNotification().getBody())
-//                    .setAutoCancel(true)
-//                    .setSound(defaultSoundUri)
-//                    .setContentIntent(pendingIntent);
-//
-//            NotificationManager notificationManager =
-//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-//        }
+        if (remoteMessage.getNotification() != null) {
+            Intent intent = new Intent(this, NavBar.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder;
+            if (remoteMessage.getNotification().getTitle() != null){
+                notificationBuilder = new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.event_icon)
+                        .setContentTitle(remoteMessage.getNotification().getTitle())
+                        .setContentText(remoteMessage.getNotification().getBody())
+                        .setAutoCancel(true)
+                        .setColor(ContextCompat.getColor(this,R.color.colorPrimary))
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+            }
+            else{
+                notificationBuilder = new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.event_icon)
+                        .setContentTitle("Events App")
+                        .setContentText(remoteMessage.getNotification().getBody())
+                        .setAutoCancel(true)
+                        .setColor(ContextCompat.getColor(this,R.color.colorPrimary))
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+            }
+
+
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.

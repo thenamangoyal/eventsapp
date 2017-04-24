@@ -39,11 +39,14 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner usertypeSpinner;
     private Button bRegister;
     private Context context = null;
+
+    RequestQueue queue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         context = this;
+        queue = Volley.newRequestQueue(context);
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -215,7 +218,6 @@ public class RegisterActivity extends AppCompatActivity {
                             }
 
                         };
-                        RequestQueue queue = Volley.newRequestQueue(context);
                         queue.add(registerRequest);
 
 
@@ -223,6 +225,18 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (queue != null){
+            queue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+        }
     }
 
     private void getusertype(){
@@ -265,10 +279,9 @@ public class RegisterActivity extends AppCompatActivity {
                     });
 
             //Creating a request queue
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
 
             //Adding request to the queue
-            requestQueue.add(usertypeRequest);
+            queue.add(usertypeRequest);
 
     }
 }

@@ -21,6 +21,7 @@
     <string name="getBookmark_url">http://10.1.1.19/~2015csb1021/event/getBookmark.php</string>
     <string name="toggleBookmark_url">http://10.1.1.19/~2015csb1021/event/toggleBookmark.php</string>
 
+    <string name="getInfo_url">http://10.1.1.19/~2015csb1021/event/getInfo.php</string>
     <string name="updateFCMtoken_url">http://10.1.1.19/~2015csb1021/event/updateFCMtoken.php</string>
 
     <string name="changePassword_url">http://10.1.1.19/~2015csb1021/event/changePassword.php</string>

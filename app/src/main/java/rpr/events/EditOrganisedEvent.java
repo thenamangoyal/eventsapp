@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -163,7 +164,10 @@ public class EditOrganisedEvent extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-                builder.show();
+                AlertDialog alert = builder.create();
+                alert.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                alert.show();
 
             }});
         txtVenue.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +192,10 @@ public class EditOrganisedEvent extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-                builder.show();
+                AlertDialog alert = builder.create();
+                alert.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                alert.show();
 
             }});
         txtDetails.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +220,10 @@ public class EditOrganisedEvent extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-                builder.show();
+                AlertDialog alert = builder.create();
+                alert.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                alert.show();
 
             }});
 

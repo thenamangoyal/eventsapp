@@ -66,6 +66,14 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <TextView
+                android:text="Subscriptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:id="@+id/tvSubs" />
+
 
             <Spinner
                 android:id="@+id/usertype_spinner"

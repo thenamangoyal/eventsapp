@@ -153,7 +153,12 @@ public class LoginActivity extends AppCompatActivity {
                                             final JSONObject jsonResponse = new JSONObject(response);
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
+                                                UserSessionManager session = new UserSessionManager(getApplicationContext());
+                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"), jsonResponse.getString("created"));
+
                                                 FirebaseMessaging.getInstance().subscribeToTopic("0");
+                                                FirebaseMessaging.getInstance().subscribeToTopic(jsonResponse.getInt("usertype_id")+"");
+
                                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.firebase_pref),MODE_PRIVATE);
                                                 final int user_id = jsonResponse.getInt("user_id");
                                                 final String token = sharedPreferences.getString(getString(R.string.firebase_token),"");
@@ -202,11 +207,6 @@ public class LoginActivity extends AppCompatActivity {
                                                 queue.add(fcmRequest);
 
 
-                                                UserSessionManager session = new UserSessionManager(getApplicationContext());
-
-
-
-                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"), jsonResponse.getString("created"));
 
                                                 Toast.makeText(getApplicationContext(), "Login Successful " + jsonResponse.getString("name"), Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(LoginActivity.this, NavBar.class);

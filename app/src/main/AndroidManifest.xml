@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_all_inclusive_black_24dp" />
+            android:resource="@drawable/event_icon" />
         <!--
              Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.
@@ -42,11 +42,6 @@
         <activity
             android:name=".NavBar"
             android:label="@string/title_activity_nav_bar"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -80,10 +75,6 @@
             android:label="Edit Organised Event"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ManageSubscription"
-            android:label="@string/title_activity_manage_subscription"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
