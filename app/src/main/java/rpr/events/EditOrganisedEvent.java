@@ -21,8 +21,6 @@ public class EditOrganisedEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_organised_event);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
