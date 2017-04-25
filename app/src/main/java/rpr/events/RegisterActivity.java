@@ -2,6 +2,8 @@ package rpr.events;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -145,13 +147,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (etName.getText().toString().trim().equals("")){
-                    Toast.makeText(getApplicationContext(), "Please specify Name", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Please specify Name", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(etEmail.getText().toString().trim().equals("") || !(etEmail.getText().toString().trim().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in"))){
-                    Toast.makeText(getApplicationContext(), "Please specify valid Email", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Please specify valid Email", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(etPassword.getText().toString().length() < 8){
-                    Toast.makeText(getApplicationContext(), "Please specify Password of atleast 8 characters", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Please specify Password of atleast 8 characters", Snackbar.LENGTH_SHORT).show();
                 }
                 else{
                     final String name = etName.getText().toString().trim();

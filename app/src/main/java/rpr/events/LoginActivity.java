@@ -2,6 +2,7 @@ package rpr.events;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -133,11 +134,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(etEmail.getText().toString().trim().equals("")){
-                    Toast.makeText(getApplicationContext(), "Please specify Username", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Please specify Username", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
                     if (etPassword.getText().toString().equals("")) {
-                        Toast.makeText(getApplicationContext(), "Please specify Password", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(v, "Please specify Password", Snackbar.LENGTH_SHORT).show();
                     } else {
                         final String email = etEmail.getText().toString().trim();
                         final String password = etPassword.getText().toString();

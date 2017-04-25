@@ -176,6 +176,13 @@
             android:clickable="true"
             android:padding="@dimen/activity_horizontal_margin">
 
+            <ImageView
+                android:id="@+id/ivContactItem4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_all_out_black_24dp"
+                android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
 
             <TextView
@@ -184,6 +191,9 @@
                 android:layout_height="wrap_content"
                 android:text="Details"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_toRightOf="@id/ivContactItem4"
+
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:textColor="#212121" />
 
 
@@ -238,8 +248,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="8dp"
             android:padding="20dp"
@@ -251,8 +261,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="8dp"
             android:padding="20dp"
