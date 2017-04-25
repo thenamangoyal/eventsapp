@@ -150,10 +150,17 @@ public class LoginActivity extends AppCompatActivity {
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
                                                 UserSessionManager session = new UserSessionManager(getApplicationContext());
-                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"), jsonResponse.getString("created"));
+                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"),jsonResponse.getInt("usertypes"), jsonResponse.getString("created"));
 
                                                 FirebaseMessaging.getInstance().subscribeToTopic("0");
-                                                FirebaseMessaging.getInstance().subscribeToTopic(jsonResponse.getInt("usertype_id")+"");
+                                                for (int i=1; i<jsonResponse.getInt("usertypes");i++){
+                                                    if (i==jsonResponse.getInt("usertype_id")){
+                                                        FirebaseMessaging.getInstance().subscribeToTopic(i+"");
+                                                    }
+                                                    else{
+                                                        FirebaseMessaging.getInstance().unsubscribeFromTopic(i+"");
+                                                    }
+                                                }
 
                                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.firebase_pref),MODE_PRIVATE);
                                                 final int user_id = jsonResponse.getInt("user_id");

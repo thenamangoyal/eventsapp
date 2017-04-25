@@ -253,7 +253,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="8dp"
             android:padding="20dp"
-            android:text="Add to Calender"/>
+            android:text="Add to Calendar"/>
 
         <Button
 

@@ -72,7 +72,16 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             HashMap<String, String> user = session.getUserDetails();
             final String user_id = user.get(UserSessionManager.KEY_USER_ID);
             final String usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
+            final String usertypes = user.get(UserSessionManager.KEY_USERTYPES);
             FirebaseMessaging.getInstance().subscribeToTopic("0");
+            for (int i=1; i<Integer.parseInt(usertypes);i++){
+                if (i==Integer.parseInt(usertype_id)){
+                    FirebaseMessaging.getInstance().subscribeToTopic(i+"");
+                }
+                else{
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(i+"");
+                }
+            }
             FirebaseMessaging.getInstance().subscribeToTopic(usertype_id);
             StringRequest fcmRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.updateFCMtoken_url),
                     new Response.Listener<String>() {
