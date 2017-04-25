@@ -137,7 +137,9 @@ public class DisplayEventList extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        db.close();
+        if (db != null){
+            db.close();
+        }
     }
 
     @Override

@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     Button bLogin;
     TextView registerLink;
     UserSessionManager session;
+    RequestQueue queue;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Session Manager
         session = new UserSessionManager(getApplicationContext());
+        queue = Volley.newRequestQueue(getApplicationContext());
 
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -69,15 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         if (session.isUserLoggedIn()){
-
-
-
-
             Intent intent = new Intent(LoginActivity.this, NavBar.class);
-//
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//            // Add new Flag to start new Activity
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             LoginActivity.this.startActivity(intent);
             finish();
@@ -132,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
 
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if(etEmail.getText().toString().trim().equals("")){
                     Snackbar.make(v, "Please specify Username", Snackbar.LENGTH_SHORT).show();
                 }
@@ -204,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     }
 
                                                 };
-                                                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
                                                 queue.add(fcmRequest);
 
 
@@ -236,7 +231,7 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onErrorResponse(VolleyError error) {
                                         // error
 
-                                        Toast.makeText(getApplicationContext(), "Couldn't connect to internet",Toast.LENGTH_SHORT).show();
+                                        Snackbar.make(v, "Couldn't connect to internet",Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
                         ) {
@@ -251,7 +246,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                         };
-                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                         queue.add(loginRequest);
                     }
                 }

@@ -145,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if (etName.getText().toString().trim().equals("")){
                     Snackbar.make(v, "Please specify Name", Snackbar.LENGTH_SHORT).show();
                 }
@@ -203,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onErrorResponse(VolleyError error) {
                                 // error
 
-                                Toast.makeText(getApplicationContext(), "Couldn't connect to internet",Toast.LENGTH_SHORT).show();
+                                Snackbar.make(v, "Couldn't connect to internet",Snackbar.LENGTH_SHORT).show();
                             }
                         }
                         ) {

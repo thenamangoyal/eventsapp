@@ -1,6 +1,7 @@
 package rpr.events;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,7 @@ public class changePassword extends AppCompatActivity {
     EditText newpass2;
     Button changepass;
     UserSessionManager session;
+    RequestQueue queue;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -52,6 +54,7 @@ public class changePassword extends AppCompatActivity {
         newpass = (EditText) findViewById(R.id.etnewPassword);
         newpass2 = (EditText) findViewById(R.id.etnewPassword2);
         changepass = (Button) findViewById(R.id.bchangePassword);
+        queue = Volley.newRequestQueue(getApplicationContext());
 
         newpass.addTextChangedListener(new TextWatcher()  {
 
@@ -105,7 +108,7 @@ public class changePassword extends AppCompatActivity {
 
         changepass.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
                 if(oldpass.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "Please specify old Password", Toast.LENGTH_SHORT).show();
@@ -149,8 +152,7 @@ public class changePassword extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // error
-
-                                Toast.makeText(getApplicationContext(), "Couldn't connect to internet",Toast.LENGTH_SHORT).show();
+                                Snackbar.make(v, "Couldn't connect to internet",Snackbar.LENGTH_SHORT).show();
                             }
                         }
                         ) {
@@ -166,7 +168,7 @@ public class changePassword extends AppCompatActivity {
                             }
 
                         };
-                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
                         queue.add(changepasswordRequest);
 
                 }

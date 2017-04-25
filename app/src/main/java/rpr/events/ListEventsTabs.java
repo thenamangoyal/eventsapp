@@ -79,8 +79,9 @@ public class ListEventsTabs extends Fragment {
                 }
             });
         }
-
-        db.close();
+        if(db != null){
+            db.close();
+        }
     }
 
     protected void createDatabase(){

@@ -74,7 +74,9 @@ public class PastEvent extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        db.close();
+        if (db != null){
+            db.close();
+        }
     }
 
     @Override
