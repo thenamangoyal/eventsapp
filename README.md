@@ -6,5 +6,6 @@ To ease students' stay at IIT Ropar, and provide one click access to all relevan
 
 Documentation
 -------------
-Visit for more info like Report, User Manual, Design Document, Test Document
 https://github.com/namangl/software-systems-lab
+
+Visit for more info like Report, User Manual, Design Document, Test Document
